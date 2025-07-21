@@ -866,6 +866,8 @@
                             justify-content: space-between;
                             align-items: center;
                             cursor: default;
+                            position: relative;
+                            z-index: 5;
                         }
 
                         .header-info {
@@ -1085,16 +1087,17 @@
                         }
 
                         /* Resize handle styling */
-                        .chatbot-window::after {
+                        .chatbot-window::before {
                             content: '';
                             position: absolute;
-                            bottom: 0;
-                            right: 0;
+                            top: 0;
+                            left: 0;
                             width: 15px;
                             height: 15px;
                             cursor: nwse-resize;
-                            background: linear-gradient(135deg, transparent 50%, rgba(102, 126, 234, 0.5) 50%);
-                            border-bottom-right-radius: 5px;
+                            background: linear-gradient(315deg, transparent 50%, rgba(102, 126, 234, 0.5) 50%);
+                            border-top-left-radius: 5px;
+                            z-index: 10;
                         }
 
                         /* Mobile responsiveness */
@@ -1112,6 +1115,10 @@
                                 resize: vertical;
                                 min-width: calc(100vw - 20px);
                                 max-width: calc(100vw - 20px);
+                            }
+                            
+                            .chatbot-window::before {
+                                display: none; /* Hide resize handle on mobile */
                             }
                         }
                     </style>
