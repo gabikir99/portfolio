@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio - Data Scientist & AI Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 20px;
+            margin: 2rem auto;
+            animation: slideDown 1s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.5); }
+            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.8); }
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Section Styling */
+        .section {
+            background: rgba(255, 255, 255, 0.9);
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.8s ease forwards;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .section:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        .section:nth-child(odd) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        /* About Me */
+        .about-content {
+            font-size: 1.2rem;
+            text-align: center;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .skill-category h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        .project-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tech-badge {
+            background: #e2e8f0;
+            color: #4a5568;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge:hover {
+            background: #cbd5e0;
+            transform: scale(1.1);
+        }
+
+        /* Education & Work */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-left: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 2rem;
+            width: 15px;
+            height: 15px;
+            background: #667eea;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        /* Download Section */
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Floating Animation */
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .skills-grid,
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Particle Effect */
+        .particle {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleMove 10s linear infinite;
+        }
+
+        @keyframes particleMove {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="container">
+        <div class="header floating">
+            <h1>Gavriel Kirichenko</h1>
+            <p>Aspiring Data Scientist and AI Developer</p>
+            <p>Bradford, Ontario</p>
+            <div class="contact-info">
+                <a href="mailto:gabikir1999@gmail.com" class="contact-item">📧 Email</a>
+                <a href="tel:+16476083345" class="contact-item">📞 +1 (647) 608-3345</a>
+                <a href="https://www.linkedin.com/in/gavrielkirichenko/" class="contact-item" target="_blank">💼 LinkedIn</a>
+                <a href="https://github.com/gabikir99" class="contact-item" target="_blank">💻 GitHub</a>
+                <a href="https://www.kaggle.com/gavrielkirichenko" class="contact-item" target="_blank">📊 Kaggle</a>
+            </div>
+        </div>
+
+        <!-- About Me -->
+        <div class="section">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <p>Analytical and results-driven Data Scientist and AI Developer with experience building ML models, deploying real-time vision systems, and delivering insights through data storytelling. Proficient in Python, deep learning, and visualization tools. Currently pursuing a Postgraduate Certificate in Applied AI Solutions Development at George Brown College, with a solid Computer Science foundation from York University. Eager to contribute to data-driven innovation in analytics or AI roles.</p>
+            </div>
+        </div>
+
+        <!-- Technical Skills -->
+        <div class="section">
+            <h2>Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programming & ML Frameworks</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">TensorFlow/Keras</span>
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">scikit-learn</span>
+                        <span class="skill-tag">Hugging Face</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Signal Processing & Computer Vision</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">OpenCV</span>
+                        <span class="skill-tag">Frame Differencing</span>
+                        <span class="skill-tag">Contour Detection</span>
+                        <span class="skill-tag">Time-Series Pipelines</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Data Science & Analytics</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">pandas</span>
+                        <span class="skill-tag">NumPy</span>
+                        <span class="skill-tag">Regression/Classification</span>
+                        <span class="skill-tag">Feature Engineering</span>
+                        <span class="skill-tag">Excel</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Visualization & BI</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Tableau</span>
+                        <span class="skill-tag">Power BI</span>
+                        <span class="skill-tag">Matplotlib</span>
+                        <span class="skill-tag">Seaborn</span>
+                        <span class="skill-tag">PowerPoint</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>DevOps & Cloud</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">AWS</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">GitHub Actions</span>
+                        <span class="skill-tag">CI/CD</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3>Machine Learning Concepts</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">CNNs, RNNs, LSTMs</span>
+                        <span class="skill-tag">NLP & Sentiment Analysis</span>
+                        <span class="skill-tag">Model Evaluation</span>
+                        <span class="skill-tag">Hyperparameter Tuning</span>
+                        <span class="skill-tag">Cross-Validation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="section">
+            <h2>Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>AI-Powered Career Coaching Chatbot</h3>
+                    </div>
+                    <div class="project-content">
+                        <p>Built a production-grade chatbot using Python, Flask, OpenAI GPT-4 API, and custom memory management. Automated PDF resume extraction pipeline achieving 95%+ text extraction accuracy with dynamic prompt templates and user context retention.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">Flask</span>
+                            <span class="tech-badge">OpenAI GPT-4</span>
+                            <span class="tech-badge">PDF Processing</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>LLM-Powered Banking Assistant</h3>
+                    </div>
+                    <div class="project-content">
+                        <p>Built an AI-powered chatbot using OpenAI API, LangChain, and FastAPI. Integrated ChromaDB vector store for RAG-style contextual retrieval and Model Context Protocol (MCP) for seamless communication with external banking systems.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">OpenAI API</span>
+                            <span class="tech-badge">LangChain</span>
+                            <span class="tech-badge">FastAPI</span>
+                            <span class="tech-badge">ChromaDB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Cybersecurity Visualization Dashboard</h3>
+                    </div>
+                    <div class="project-content">
+                        <p>Used Tableau Prep Builder to clean and enrich cybersecurity incident logs. Designed interactive dashboards with geospatial maps, temporal trends, and Pareto analyses to highlight attack hotspots and support security decision-making.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">Tableau</span>
+                            <span class="tech-badge">Prep Builder</span>
+                            <span class="tech-badge">Data Visualization</span>
+                            <span class="tech-badge">Security Analytics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Chess Game Outcome Predictor</h3>
+                    </div>
+                    <div class="project-content">
+                        <p>Collaborated with a team to develop a chess outcome-prediction model using Python and scikit-learn on historical Kaggle data. Led data cleaning and feature engineering, transforming raw moves and player ratings to improve accuracy.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">Python</span>
+                            <span class="tech-badge">scikit-learn</span>
+                            <span class="tech-badge">Random Forests</span>
+                            <span class="tech-badge">Feature Engineering</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education -->
+        <div class="section">
+            <h2>Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Postgraduate Certificate in Applied AI Solutions Development</h3>
+                    <p><strong>George Brown College</strong> | January 2025 – Present</p>
+                    <p>Built and deployed supervised and unsupervised models with scikit-learn and TensorFlow/Keras. Designed and implemented end-to-end AI pipelines including data ingestion, cleansing, and feature engineering using Python and SQL.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Bachelor of Arts in Computer Science</h3>
+                    <p><strong>York University</strong> | September 2017 – December 2023</p>
+                    <p>Implemented inheritance, polymorphism, and design patterns. Performed time- and space-complexity analyses and implemented algorithms like Quick Sort, Merge Sort, Dijkstra's, and A* in Java. Designed interactive GUIs using JavaFX.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Google Advanced Data Analytics Professional Certificate</h3>
+                    <p><strong>Google/Coursera</strong> | 2024</p>
+                    <p>Explored machine learning fundamentals, covering algorithm selection, training/validation workflows, and performance metrics in "The Nuts and Bolts of Machine Learning".</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Google Data Analytics Professional Certificate</h3>
+                    <p><strong>Google/Coursera</strong> | 2024</p>
+                    <p>Mastered data-cleaning & preparation techniques in spreadsheets and SQL, including PivotTables, VLOOKUP, joins, filtering. Built interactive visualizations in Tableau and learned principles of effective data storytelling.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Work Experience -->
+        <div class="section">
+            <h2>Work Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Junior Python Developer Intern</h3>
+                    <p><strong>YLTSP SOFTWARE Inc.</strong> | January 2023 – August 2023</p>
+                    <ul>
+                        <li>Led end-to-end A/B testing in Python and SQL, boosting user engagement by 12%</li>
+                        <li>Designed OOP-driven Python modules to automate ETL pipelines for experiment data</li>
+                        <li>Collaborated with front-end teams to deploy winning variants 20% faster, fostering open communication across departments</li>
+                        <li>Optimized complex SQL queries to reduce average data-retrieval times by 25%</li>
+                        <li>Developed data analysis solutions using Python, SQL, and Excel to drive data-driven decision-making</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="section">
+            <h2>Resume & Cover Letter</h2>
+            <div class="download-buttons">
+                <a href="#" class="download-btn">📄 Download Resume</a>
+                <a href="#" class="download-btn">📝 Download Cover Letter</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Add interactive hover effects
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Particle effect
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.width = particle.style.height = Math.random() * 10 + 5 + 'px';
+            particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+            document.body.appendChild(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 20000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 3000);
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add typing animation to the title
+        function typeWriter() {
+            const title = document.querySelector('.header h1');
+            const text = title.textContent;
+            title.textContent = '';
+            let i = 0;
+            
+            function type() {
+                if (i < text.length) {
+                    title.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 100);
+                }
+            }
+            
+            setTimeout(type, 1000);
+        }
+
+        // Start typing animation when page loads
+        window.addEventListener('load', typeWriter);
+
+        // Add skill level animations
+        document.querySelectorAll('.skill-category').forEach((category, index) => {
+            category.style.animationDelay = (index * 0.1) + 's';
+            category.addEventListener('click', () => {
+                category.style.transform = 'scale(1.1) rotate(5deg)';
+                setTimeout(() => {
+                    category.style.transform = 'scale(1) rotate(0deg)';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>
