@@ -1204,13 +1204,75 @@
                 // Store conversation
                 this.conversations.push({role: "user", content: message});
                 
-                // Simulate typing delay
-                setTimeout(() => {
-                    this.hideTypingIndicator();
-                    const response = this.generateResponse(message);
-                    this.addMessage(response, 'bot');
-                    this.conversations.push({role: "assistant", content: response});
-                }, 1000 + Math.random() * 1000);
+                // Create a message element for the bot response
+                const messagesContainer = document.getElementById('chatbot-messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message bot-message';
+                messageDiv.id = 'current-response';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.id = 'streaming-content';
+                
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'message-time';
+                timeDiv.textContent = this.getCurrentTime();
+                
+                messageDiv.appendChild(contentDiv);
+                messageDiv.appendChild(timeDiv);
+                
+                // Hide typing indicator before adding the streaming message
+                this.hideTypingIndicator();
+                
+                // Add the empty message container
+                messagesContainer.appendChild(messageDiv);
+                
+                // Stream the response character by character
+                const response = this.generateResponse(message);
+                let displayedText = '';
+                let i = 0;
+                
+                const streamText = () => {
+                    if (i < response.length) {
+                        displayedText += response.charAt(i);
+                        
+                        // Process markdown formatting as we go
+                        let formattedText = displayedText;
+                        
+                        // Convert **text** to <strong>text</strong> (only for completed pairs)
+                        formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                        
+                        // Convert *text* to <em>text</em> (only for completed pairs)
+                        formattedText = formattedText.replace(/(?<!\-\s)\*(.*?)\*/g, '<em>$1</em>');
+                        
+                        // Convert bullet points to HTML list items
+                        formattedText = formattedText.replace(/\n\s*•\s+(.*?)(?=\n|$)/g, '\n<li>$1</li>');
+                        
+                        // Convert line breaks to <br>
+                        formattedText = formattedText.replace(/\n\n/g, '<br><br>');
+                        formattedText = formattedText.replace(/\n/g, '<br>');
+                        
+                        contentDiv.innerHTML = formattedText;
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        i++;
+                        
+                        // Adjust typing speed based on punctuation
+                        let delay = 20; // Base delay in milliseconds
+                        if (['.', '!', '?', '\n'].includes(response.charAt(i-1))) {
+                            delay = 100; // Longer pause after sentence endings
+                        } else if ([',', ';', ':'].includes(response.charAt(i-1))) {
+                            delay = 50; // Medium pause after commas, etc.
+                        }
+                        
+                        setTimeout(streamText, delay);
+                    } else {
+                        // Store the complete response in conversation history
+                        this.conversations.push({role: "assistant", content: response});
+                    }
+                };
+                
+                // Start streaming after a short delay
+                setTimeout(streamText, 200);
             }
             
             generateResponse(message) {
@@ -1265,6 +1327,22 @@
                 const messagesContainer = document.getElementById('chatbot-messages');
                 const messageDiv = document.createElement('div');
                 messageDiv.className = `message ${sender}-message`;
+                
+                // Process markdown-style formatting for bot messages
+                if (sender === 'bot') {
+                    // Convert **text** to <strong>text</strong>
+                    content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                    
+                    // Convert *text* to <em>text</em> (but not if it's part of a bullet point)
+                    content = content.replace(/(?<!\-\s)\*(.*?)\*/g, '<em>$1</em>');
+                    
+                    // Convert bullet points to HTML list items
+                    content = content.replace(/\n\s*•\s+(.*?)(?=\n|$)/g, '\n<li>$1</li>');
+                    
+                    // Convert line breaks to <br>
+                    content = content.replace(/\n\n/g, '<br><br>');
+                    content = content.replace(/\n/g, '<br>');
+                }
                 
                 messageDiv.innerHTML = `
                     <div class="message-content">${content}</div>
