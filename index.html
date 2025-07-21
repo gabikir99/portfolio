@@ -841,6 +841,11 @@
                             flex-direction: column;
                             overflow: hidden;
                             border: 1px solid rgba(255,255,255,0.3);
+                            resize: both;
+                            min-width: 300px;
+                            min-height: 400px;
+                            max-width: 800px;
+                            max-height: 800px;
                         }
 
                         .chatbot-window.open {
@@ -860,6 +865,7 @@
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
+                            cursor: default;
                         }
 
                         .header-info {
@@ -1078,6 +1084,19 @@
                             background: #f0f0f0;
                         }
 
+                        /* Resize handle styling */
+                        .chatbot-window::after {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            width: 15px;
+                            height: 15px;
+                            cursor: nwse-resize;
+                            background: linear-gradient(135deg, transparent 50%, rgba(102, 126, 234, 0.5) 50%);
+                            border-bottom-right-radius: 5px;
+                        }
+
                         /* Mobile responsiveness */
                         @media (max-width: 768px) {
                             .chatbot-container {
@@ -1090,6 +1109,9 @@
                                 height: 400px;
                                 bottom: 60px;
                                 right: -10px;
+                                resize: vertical;
+                                min-width: calc(100vw - 20px);
+                                max-width: calc(100vw - 20px);
                             }
                         }
                     </style>
@@ -1130,6 +1152,17 @@
                 document.getElementById('reset-chat').addEventListener('click', () => {
                     this.resetChat();
                 });
+                
+                // Handle resize events to ensure messages container scrolls to bottom
+                const chatWindow = document.getElementById('chatbot-window');
+                if (chatWindow) {
+                    chatWindow.addEventListener('mouseup', () => {
+                        const messagesContainer = document.getElementById('chatbot-messages');
+                        if (messagesContainer) {
+                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                        }
+                    });
+                }
             }
 
             toggleChatbot() {
