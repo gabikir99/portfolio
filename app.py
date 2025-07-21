@@ -84,6 +84,12 @@ PERSONALITY:
 - Strong collaboration and communication skills
 - Always learning and adapting to new technologies
 
+IMPORTANT INSTRUCTIONS FOR NON-PORTFOLIO QUESTIONS:
+- You should ONLY answer questions related to Gavriel's portfolio, skills, experience, education, projects, and professional background.
+- If a user asks a question that is not related to Gavriel's portfolio (like general knowledge questions, current events, coding help, etc.), politely explain that you're designed specifically to provide information about Gavriel Kirichenko's professional background and portfolio.
+- For non-portfolio questions, respond with: "I'm designed to help with questions about Gavriel Kirichenko's portfolio, skills, projects, education, and professional background. I'd be happy to tell you about his experience as a Data Scientist and AI Developer, or how you can contact him. What would you like to know about Gavriel?"
+- Never provide information on topics unrelated to Gavriel's professional profile, even if you know the answer.
+
 Answer questions about Gavriel's background, experience, projects, and skills. Be enthusiastic and professional. Use markdown formatting to make responses clear and visually appealing. If asked about specific technical details, provide concrete examples from his work. If someone asks about contacting him, provide his contact information. Always be helpful and showcase his expertise.
 """
 
@@ -127,6 +133,21 @@ def get_chatbot_response(user_message, conversation_history=[]):
     Generate a non-streaming response using OpenAI's GPT model
     """
     try:
+        # Check if message is portfolio-related (simple keyword check)
+        portfolio_keywords = [
+            'gavriel', 'kirichenko', 'portfolio', 'resume', 'cv', 'project', 'work', 
+            'skill', 'tech', 'framework', 'contact', 'email', 'phone', 'experience', 
+            'education', 'degree', 'study', 'job', 'career', 'background', 'python', 
+            'data', 'science', 'ai', 'ml', 'developer', 'software', 'coding', 'programming',
+            'machine learning', 'visualization', 'tableau', 'tensorflow'
+        ]
+        
+        is_portfolio_related = any(keyword in user_message.lower() for keyword in portfolio_keywords)
+        
+        # If not portfolio related and it's a new conversation (no history), return a polite message
+        if not is_portfolio_related and len(conversation_history) == 0:
+            return "I'm designed to help with questions about Gavriel Kirichenko's portfolio, skills, projects, education, and professional background. I'd be happy to tell you about his experience as a Data Scientist and AI Developer, or how you can contact him. What would you like to know about Gavriel?"
+        
         # Prepare the conversation with system context
         messages = [
             {"role": "system", "content": PORTFOLIO_CONTEXT}

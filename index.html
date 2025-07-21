@@ -1279,6 +1279,24 @@
                 // Simple rule-based responses
                 message = message.toLowerCase();
                 
+                // Portfolio-related keywords
+                const portfolioKeywords = [
+                    'project', 'work', 'skill', 'tech', 'framework', 'contact', 'email', 
+                    'phone', 'experience', 'education', 'degree', 'study', 'gavriel', 
+                    'kirichenko', 'portfolio', 'resume', 'cv', 'job', 'career', 'background',
+                    'python', 'data', 'science', 'ai', 'ml', 'developer', 'software', 'coding',
+                    'programming', 'machine learning', 'visualization', 'tableau', 'tensorflow'
+                ];
+                
+                // Check if message is related to portfolio
+                const isPortfolioRelated = portfolioKeywords.some(keyword => message.includes(keyword));
+                
+                // If not portfolio related, return a polite message
+                if (!isPortfolioRelated) {
+                    return "I'm designed to help with questions about Gavriel Kirichenko's portfolio, skills, projects, education, and professional background. I'd be happy to tell you about his experience as a Data Scientist and AI Developer, or how you can contact him. What would you like to know about Gavriel?";
+                }
+                
+                // Portfolio-related responses
                 if (message.includes('project') || message.includes('work')) {
                     return "Gavriel has worked on several impressive projects including:\n\n" +
                            "• **AI-Powered Career Coaching Chatbot** - Built with Python, Flask, and OpenAI GPT-4 API\n\n" +
@@ -1319,7 +1337,7 @@
                            "• **Google Data Analytics Professional Certificate** (2024)";
                 }
                 
-                // Default response
+                // Default response for portfolio-related questions that don't match specific categories
                 return "Thanks for your interest in Gavriel's portfolio! He's an aspiring Data Scientist and AI Developer with experience in Python, machine learning, and data visualization. Feel free to ask about his projects, skills, education, or how to contact him.";
             }
 
