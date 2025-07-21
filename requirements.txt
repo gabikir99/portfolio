@@ -1,17 +1,5 @@
 # requirements.txt
 flask==3.0.0
 flask-cors==4.0.0
-openai==0.28.1
+openai>=1.0.0
 python-dotenv==1.0.0
-
-# Setup Instructions for Portfolio Chatbot
-
-## 🚀 Quick Setup Guide
-
-### 1. Install Python Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Get OpenAI API Key
-1. Go to https://platform.openai.com
