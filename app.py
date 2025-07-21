@@ -221,7 +221,7 @@ def chat():
         print(f"Chat endpoint error: {str(e)}")
         return jsonify({'error': f'Server error: {str(e)}'}), 500
 
-@app.route('/chat/stream', methods=['POST'])
+@app.route('/chat/stream', methods=['POST', 'GET'])
 def chat_stream():
     """Streaming chat endpoint"""
     def generate():
@@ -264,6 +264,9 @@ def chat_stream():
             
             conversation_history = conversations[session_id]
             
+            # Add user message to conversation history
+            conversation_history.append({"role": "user", "content": user_message})
+            
             # Get streaming response
             stream = get_chatbot_response_stream(user_message, conversation_history)
             
@@ -285,9 +288,10 @@ def chat_stream():
                         'formatted': True
                     }
                     yield f"data: {json.dumps(chunk_data)}\n\n"
+                    # Flush the data to ensure it's sent immediately
+                    yield f": keepalive\n\n"
             
             # Update conversation history with full response
-            conversation_history.append({"role": "user", "content": user_message})
             conversation_history.append({"role": "assistant", "content": full_response})
             conversations[session_id] = conversation_history[-20:]
             
@@ -298,7 +302,10 @@ def chat_stream():
             print(f"Streaming error: {str(e)}")
             yield f"data: {json.dumps({'error': f'Streaming error: {str(e)}'})}\n\n"
     
-    return Response(generate(), mimetype='text/plain')
+    response = Response(generate(), mimetype='text/event-stream')
+    response.headers['Cache-Control'] = 'no-cache'
+    response.headers['X-Accel-Buffering'] = 'no'
+    return response
 
 @app.route('/reset', methods=['POST'])
 def reset_conversation():

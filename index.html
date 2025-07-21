@@ -1223,7 +1223,34 @@
                 this.showTypingIndicator();
                 
                 try {
-                    const response = await fetch(`${this.apiUrl}/chat`, {
+                    // Create a message element for the bot response
+                    const messagesContainer = document.getElementById('chatbot-messages');
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message bot-message';
+                    messageDiv.id = 'current-response';
+                    
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'message-content';
+                    contentDiv.id = 'streaming-content';
+                    
+                    const timeDiv = document.createElement('div');
+                    timeDiv.className = 'message-time';
+                    timeDiv.textContent = this.getCurrentTime();
+                    
+                    messageDiv.appendChild(contentDiv);
+                    messageDiv.appendChild(timeDiv);
+                    
+                    // Hide typing indicator before adding the streaming message
+                    this.hideTypingIndicator();
+                    
+                    // Add the empty message container
+                    messagesContainer.appendChild(messageDiv);
+                    
+                    // Create a unique request ID to correlate the POST and EventSource
+                    const requestId = Date.now().toString();
+                    
+                    // First send the POST request with the message
+                    fetch(`${this.apiUrl}/chat/stream`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -1234,18 +1261,53 @@
                         })
                     });
                     
-                    const data = await response.json();
+                    // Then create the EventSource to receive the streaming response
+                    const eventSource = new EventSource(`${this.apiUrl}/chat/stream?session_id=${this.sessionId}&_=${requestId}`);
                     
-                    // Hide typing indicator
-                    this.hideTypingIndicator();
+                    let fullResponse = '';
                     
-                    if (response.ok) {
-                        // Add bot response
-                        this.addMessage(data.response, 'bot');
-                    } else {
-                        this.addMessage('Sorry, I encountered an error. Please try again or contact Gavriel directly at gabikir1999@gmail.com', 'bot');
-                    }
+                    // Handle incoming stream data
+                    eventSource.onmessage = (event) => {
+                        try {
+                            const data = JSON.parse(event.data);
+                            
+                            // Check if this is the completion signal
+                            if (data.done) {
+                                eventSource.close();
+                                return;
+                            }
+                            
+                            // Check for errors
+                            if (data.error) {
+                                contentDiv.textContent = 'Sorry, I encountered an error. Please try again or contact Gavriel directly at gabikir1999@gmail.com';
+                                eventSource.close();
+                                return;
+                            }
+                            
+                            // Append the new content
+                            if (data.content) {
+                                fullResponse += data.content;
+                                contentDiv.textContent = fullResponse;
+                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                            }
+                        } catch (error) {
+                            console.error('Error parsing stream data:', error);
+                        }
+                    };
+                    
+                    // Handle errors
+                    eventSource.onerror = (error) => {
+                        console.error('EventSource error:', error);
+                        eventSource.close();
+                        
+                        // If we haven't received any content yet, show an error message
+                        if (!fullResponse) {
+                            contentDiv.textContent = 'The chatbot service is currently offline. Please contact Gavriel directly at gabikir1999@gmail.com or through LinkedIn.';
+                        }
+                    };
+                    
                 } catch (error) {
+                    console.error('Error setting up streaming:', error);
                     this.hideTypingIndicator();
                     this.addMessage('The chatbot service is currently offline. Please contact Gavriel directly at gabikir1999@gmail.com or through LinkedIn.', 'bot');
                 }
