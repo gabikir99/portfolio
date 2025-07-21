@@ -15,10 +15,11 @@
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background: linear-gradient(-45deg, #38b2ac, #6b46c1, #2d3748, #805ad5);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             overflow-x: hidden;
+            padding-top: 60px;
         }
 
         @keyframes gradientShift {
@@ -31,6 +32,35 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+        }
+
+        /* Top navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .top-nav a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .top-nav a:hover {
+            background: rgba(56, 178, 172, 0.2);
         }
 
         /* Header */
@@ -123,7 +153,7 @@
         }
 
         .section h2 {
-            color: #4a5568;
+            color: #2d3748;
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             text-align: center;
@@ -139,7 +169,7 @@
             transform: translateX(-50%);
             width: 100px;
             height: 3px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: linear-gradient(45deg, #38b2ac, #6b46c1);
             border-radius: 2px;
         }
 
@@ -148,7 +178,7 @@
             font-size: 1.2rem;
             text-align: center;
             line-height: 1.8;
-            color: #555;
+            color: #4a5568;
         }
 
         /* Skills Grid */
@@ -159,7 +189,7 @@
         }
 
         .skill-category {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #38b2ac 0%, #6b46c1 100%);
             color: white;
             padding: 1.5rem;
             border-radius: 15px;
@@ -192,7 +222,7 @@
         }
 
         .skill-tag:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.4);
             transform: scale(1.1);
         }
 
@@ -219,7 +249,7 @@
         }
 
         .project-header {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #38b2ac 0%, #6b46c1 100%);
             color: white;
             padding: 1.5rem;
             text-align: center;
@@ -263,7 +293,7 @@
             top: 0;
             height: 100%;
             width: 3px;
-            background: linear-gradient(to bottom, #667eea, #764ba2);
+            background: linear-gradient(to bottom, #38b2ac, #6b46c1);
             border-radius: 2px;
         }
 
@@ -290,7 +320,7 @@
             top: 2rem;
             width: 15px;
             height: 15px;
-            background: #667eea;
+            background: #38b2ac;
             border: 3px solid white;
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -305,7 +335,7 @@
         }
 
         .download-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #38b2ac 0%, #6b46c1 100%);
             color: white;
             padding: 1rem 2rem;
             text-decoration: none;
@@ -357,6 +387,11 @@
                 flex-direction: column;
                 align-items: center;
             }
+
+            .top-nav {
+                flex-wrap: wrap;
+                padding: 8px 10px;
+            }
             
             .skills-grid,
             .projects-grid {
@@ -391,6 +426,14 @@
     </style>
 </head>
 <body>
+    <nav class="top-nav">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#experience">Experience</a>
+        <a href="#resume">Resume</a>
+    </nav>
     <!-- Header -->
     <div class="container">
         <div class="header floating">
@@ -407,7 +450,7 @@
         </div>
 
         <!-- About Me -->
-        <div class="section">
+        <div id="about" class="section">
             <h2>About Me</h2>
             <div class="about-content">
                 <p>Analytical and results-driven Data Scientist and AI Developer with experience building ML models, deploying real-time vision systems, and delivering insights through data storytelling. Proficient in Python, deep learning, and visualization tools. Currently pursuing a Postgraduate Certificate in Applied AI Solutions Development at George Brown College, with a solid Computer Science foundation from York University. Eager to contribute to data-driven innovation in analytics or AI roles.</p>
@@ -415,7 +458,7 @@
         </div>
 
         <!-- Technical Skills -->
-        <div class="section">
+        <div id="skills" class="section">
             <h2>Technical Skills</h2>
             <div class="skills-grid">
                 <div class="skill-category">
@@ -481,7 +524,7 @@
         </div>
 
         <!-- Projects -->
-        <div class="section">
+        <div id="projects" class="section">
             <h2>Featured Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
@@ -540,11 +583,37 @@
                         </div>
                     </div>
                 </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Malaria Cell Classification with Vision Transformers</h3>
+                    </div>
+                    <div class="project-content">
+                        <p>Trained CNN, VGG16, and ViT models to detect malaria in blood smears, achieving around 93% accuracy with transfer learning and deploying a Streamlit app for instant predictions.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">VGG16</span>
+                            <span class="tech-badge">Vision Transformer</span>
+                            <span class="tech-badge">Streamlit</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h3>Garbage Classification with YOLOv8</h3>
+                    </div>
+                    <div class="project-content">
+                        <p>Optimized a YOLOv8 detector with Optuna to sort waste into six material categories for recycling, archiving the trained model and results for deployment.</p>
+                        <div class="project-tech">
+                            <span class="tech-badge">YOLOv8</span>
+                            <span class="tech-badge">Optuna</span>
+                            <span class="tech-badge">Object Detection</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Education -->
-        <div class="section">
+        <div id="education" class="section">
             <h2>Education</h2>
             <div class="timeline">
                 <div class="timeline-item">
@@ -571,7 +640,7 @@
         </div>
 
         <!-- Work Experience -->
-        <div class="section">
+        <div id="experience" class="section">
             <h2>Work Experience</h2>
             <div class="timeline">
                 <div class="timeline-item">
@@ -589,7 +658,7 @@
         </div>
 
         <!-- Download Section -->
-        <div class="section">
+        <div id="resume" class="section">
             <h2>Resume</h2>
             <div class="download-buttons">
                 <a href="Resume.pdf" class="download-btn" download>📄 Download Resume</a>
@@ -731,6 +800,7 @@
 
                         <!-- Chatbot Window -->
                         <div id="chatbot-window" class="chatbot-window">
+                            <div id="resize-handle" class="resize-handle"></div>
                             <!-- Header -->
                             <div class="chatbot-header">
                                 <div class="header-info">
@@ -841,7 +911,7 @@
                             flex-direction: column;
                             overflow: hidden;
                             border: 1px solid rgba(255,255,255,0.3);
-                            resize: both;
+                            resize: none;
                             min-width: 300px;
                             min-height: 400px;
                             max-width: 800px;
@@ -1087,17 +1157,26 @@
                         }
 
                         /* Resize handle styling */
-                        .chatbot-window::before {
-                            content: '';
+                        .resize-handle {
                             position: absolute;
                             top: 0;
                             left: 0;
-                            width: 15px;
-                            height: 15px;
+                            width: 18px;
+                            height: 18px;
                             cursor: nwse-resize;
-                            background: linear-gradient(315deg, transparent 50%, rgba(102, 126, 234, 0.5) 50%);
                             border-top-left-radius: 15px;
                             z-index: 10;
+                            /* Visible striped corner so users know it's draggable */
+                            background: repeating-linear-gradient(
+                                135deg,
+                                rgba(118, 75, 162, 0.8) 0,
+                                rgba(118, 75, 162, 0.8) 2px,
+                                rgba(255, 255, 255, 0.8) 2px,
+                                rgba(255, 255, 255, 0.8) 4px
+                            );
+                            clip-path: polygon(0 0, 100% 0, 0 100%);
+                            border-right: 1px solid rgba(118, 75, 162, 0.8);
+                            border-bottom: 1px solid rgba(118, 75, 162, 0.8);
                         }
 
                         /* Mobile responsiveness */
@@ -1117,8 +1196,8 @@
                                 max-width: calc(100vw - 20px);
                             }
                             
-                            .chatbot-window::before {
-                                display: none; /* Hide resize handle on mobile */
+                            .resize-handle {
+                                display: none;
                             }
                         }
                     </style>
@@ -1170,6 +1249,49 @@
                         }
                     });
                 }
+                
+                // Enable custom resizing from the top-left corner
+                this.initResize();
+            }
+
+            initResize() {
+                const chatWindow = document.getElementById('chatbot-window');
+                const handle = document.getElementById('resize-handle');
+                if (!chatWindow || !handle) return;
+
+                let startX, startY, startWidth, startHeight;
+                const style = getComputedStyle(chatWindow);
+                const minWidth = parseInt(style.minWidth) || 300;
+                const maxWidth = parseInt(style.maxWidth) || 800;
+                const minHeight = parseInt(style.minHeight) || 400;
+                const maxHeight = parseInt(style.maxHeight) || 800;
+
+                const onMouseMove = (e) => {
+                    const width = Math.min(Math.max(startWidth + (startX - e.clientX), minWidth), maxWidth);
+                    const height = Math.min(Math.max(startHeight + (startY - e.clientY), minHeight), maxHeight);
+                    chatWindow.style.width = width + 'px';
+                    chatWindow.style.height = height + 'px';
+
+                    const messagesContainer = document.getElementById('chatbot-messages');
+                    if (messagesContainer) {
+                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                    }
+                };
+
+                const onMouseUp = () => {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                };
+
+                handle.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    startWidth = parseInt(style.width);
+                    startHeight = parseInt(style.height);
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                });
             }
 
             toggleChatbot() {
@@ -1342,7 +1464,9 @@
                            "• **AI-Powered Career Coaching Chatbot** - Built with Python, Flask, and OpenAI GPT-4 API\n\n" +
                            "• **LLM-Powered Banking Assistant** - Using OpenAI API, LangChain, and FastAPI\n\n" +
                            "• **Cybersecurity Visualization Dashboard** - Created with Tableau\n\n" +
-                           "• **Chess Game Outcome Predictor** - Using Python and scikit-learn";
+                           "• **Chess Game Outcome Predictor** - Using Python and scikit-learn\n\n" +
+                           "• **Malaria Cell Classification with ViT** - Transfer learning for medical images\n\n" +
+                           "• **Garbage Classification with YOLOv8** - Waste sorting with object detection";
                 }
                 
                 if (message.includes('skill') || message.includes('tech') || message.includes('framework')) {
