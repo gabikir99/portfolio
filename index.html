@@ -692,13 +692,13 @@
             });
         });
 
-        // Portfolio Chatbot Integration
+        // Portfolio Chatbot Integration - Standalone Version
         class PortfolioChatbot {
             constructor() {
-                this.apiUrl = 'http://localhost:5000';  // Change this to your deployed API URL
                 this.sessionId = this.generateSessionId();
                 this.isOpen = false;
                 this.isTyping = false;
+                this.conversations = [];
                 this.init();
             }
 
@@ -1158,52 +1158,32 @@
                 this.isOpen = false;
             }
 
-            async loadSuggestions() {
-                try {
-                    const response = await fetch(`${this.apiUrl}/suggestions`);
-                    const data = await response.json();
-                    
-                    const suggestionsList = document.getElementById('suggestions-list');
-                    suggestionsList.innerHTML = '';
-                    
-                    // Show first 6 suggestions
-                    data.suggestions.slice(0, 6).forEach(suggestion => {
-                        const chip = document.createElement('div');
-                        chip.className = 'suggestion-chip';
-                        chip.textContent = suggestion;
-                        chip.addEventListener('click', () => {
-                            document.getElementById('chatbot-input').value = suggestion;
-                            this.sendMessage();
-                        });
-                        suggestionsList.appendChild(chip);
+            loadSuggestions() {
+                const suggestions = [
+                    "Tell me about Gavriel's projects",
+                    "What are his technical skills?",
+                    "How can I contact him?",
+                    "What's his experience?",
+                    "Tell me about his education",
+                    "What ML frameworks does he know?"
+                ];
+                
+                const suggestionsList = document.getElementById('suggestions-list');
+                suggestionsList.innerHTML = '';
+                
+                suggestions.forEach(suggestion => {
+                    const chip = document.createElement('div');
+                    chip.className = 'suggestion-chip';
+                    chip.textContent = suggestion;
+                    chip.addEventListener('click', () => {
+                        document.getElementById('chatbot-input').value = suggestion;
+                        this.sendMessage();
                     });
-                } catch (error) {
-                    console.error('Failed to load suggestions:', error);
-                    // Add fallback suggestions
-                    const fallbackSuggestions = [
-                        "Tell me about Gavriel's projects",
-                        "What are his technical skills?",
-                        "How can I contact him?",
-                        "What's his experience?"
-                    ];
-                    
-                    const suggestionsList = document.getElementById('suggestions-list');
-                    suggestionsList.innerHTML = '';
-                    
-                    fallbackSuggestions.forEach(suggestion => {
-                        const chip = document.createElement('div');
-                        chip.className = 'suggestion-chip';
-                        chip.textContent = suggestion;
-                        chip.addEventListener('click', () => {
-                            document.getElementById('chatbot-input').value = suggestion;
-                            this.sendMessage();
-                        });
-                        suggestionsList.appendChild(chip);
-                    });
-                }
+                    suggestionsList.appendChild(chip);
+                });
             }
 
-            async sendMessage() {
+            sendMessage() {
                 const input = document.getElementById('chatbot-input');
                 const message = input.value.trim();
                 
@@ -1221,95 +1201,64 @@
                 // Show typing indicator
                 this.showTypingIndicator();
                 
-                try {
-                    // Create a message element for the bot response
-                    const messagesContainer = document.getElementById('chatbot-messages');
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = 'message bot-message';
-                    messageDiv.id = 'current-response';
-                    
-                    const contentDiv = document.createElement('div');
-                    contentDiv.className = 'message-content';
-                    contentDiv.id = 'streaming-content';
-                    
-                    const timeDiv = document.createElement('div');
-                    timeDiv.className = 'message-time';
-                    timeDiv.textContent = this.getCurrentTime();
-                    
-                    messageDiv.appendChild(contentDiv);
-                    messageDiv.appendChild(timeDiv);
-                    
-                    // Hide typing indicator before adding the streaming message
+                // Store conversation
+                this.conversations.push({role: "user", content: message});
+                
+                // Simulate typing delay
+                setTimeout(() => {
                     this.hideTypingIndicator();
-                    
-                    // Add the empty message container
-                    messagesContainer.appendChild(messageDiv);
-                    
-                    // Create a unique request ID to correlate the POST and EventSource
-                    const requestId = Date.now().toString();
-                    
-                    // First send the POST request with the message
-                    fetch(`${this.apiUrl}/chat/stream`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            session_id: this.sessionId
-                        })
-                    });
-                    
-                    // Then create the EventSource to receive the streaming response
-                    const eventSource = new EventSource(`${this.apiUrl}/chat/stream?session_id=${this.sessionId}&_=${requestId}`);
-                    
-                    let fullResponse = '';
-                    
-                    // Handle incoming stream data
-                    eventSource.onmessage = (event) => {
-                        try {
-                            const data = JSON.parse(event.data);
-                            
-                            // Check if this is the completion signal
-                            if (data.done) {
-                                eventSource.close();
-                                return;
-                            }
-                            
-                            // Check for errors
-                            if (data.error) {
-                                contentDiv.textContent = 'Sorry, I encountered an error. Please try again or contact Gavriel directly at gabikir1999@gmail.com';
-                                eventSource.close();
-                                return;
-                            }
-                            
-                            // Append the new content
-                            if (data.content) {
-                                fullResponse += data.content;
-                                contentDiv.textContent = fullResponse;
-                                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                            }
-                        } catch (error) {
-                            console.error('Error parsing stream data:', error);
-                        }
-                    };
-                    
-                    // Handle errors
-                    eventSource.onerror = (error) => {
-                        console.error('EventSource error:', error);
-                        eventSource.close();
-                        
-                        // If we haven't received any content yet, show an error message
-                        if (!fullResponse) {
-                            contentDiv.textContent = 'The chatbot service is currently offline. Please contact Gavriel directly at gabikir1999@gmail.com or through LinkedIn.';
-                        }
-                    };
-                    
-                } catch (error) {
-                    console.error('Error setting up streaming:', error);
-                    this.hideTypingIndicator();
-                    this.addMessage('The chatbot service is currently offline. Please contact Gavriel directly at gabikir1999@gmail.com or through LinkedIn.', 'bot');
+                    const response = this.generateResponse(message);
+                    this.addMessage(response, 'bot');
+                    this.conversations.push({role: "assistant", content: response});
+                }, 1000 + Math.random() * 1000);
+            }
+            
+            generateResponse(message) {
+                // Simple rule-based responses
+                message = message.toLowerCase();
+                
+                if (message.includes('project') || message.includes('work')) {
+                    return "Gavriel has worked on several impressive projects including:\n\n" +
+                           "• **AI-Powered Career Coaching Chatbot** - Built with Python, Flask, and OpenAI GPT-4 API\n\n" +
+                           "• **LLM-Powered Banking Assistant** - Using OpenAI API, LangChain, and FastAPI\n\n" +
+                           "• **Cybersecurity Visualization Dashboard** - Created with Tableau\n\n" +
+                           "• **Chess Game Outcome Predictor** - Using Python and scikit-learn";
                 }
+                
+                if (message.includes('skill') || message.includes('tech') || message.includes('framework')) {
+                    return "Gavriel's technical skills include:\n\n" +
+                           "• **Programming & ML**: Python, TensorFlow/Keras, PyTorch, scikit-learn\n\n" +
+                           "• **Computer Vision**: OpenCV, frame differencing, contour detection\n\n" +
+                           "• **Data Science**: pandas, NumPy, regression/classification, feature engineering\n\n" +
+                           "• **Visualization**: Tableau, Power BI, Matplotlib, Seaborn\n\n" +
+                           "• **DevOps & Cloud**: AWS, Docker, Git, GitHub Actions";
+                }
+                
+                if (message.includes('contact') || message.includes('email') || message.includes('phone')) {
+                    return "You can contact Gavriel through:\n\n" +
+                           "• **Email**: gabikir1999@gmail.com\n\n" +
+                           "• **Phone**: +1 (647) 608-3345\n\n" +
+                           "• **LinkedIn**: https://www.linkedin.com/in/gavrielkirichenko/\n\n" +
+                           "• **GitHub**: https://github.com/gabikir99";
+                }
+                
+                if (message.includes('experience') || message.includes('work')) {
+                    return "Gavriel worked as a **Junior Python Developer Intern** at YLTSP SOFTWARE Inc. from January to August 2023, where he:\n\n" +
+                           "• Led A/B testing in Python and SQL, boosting user engagement by 12%\n\n" +
+                           "• Designed OOP-driven Python modules to automate ETL pipelines\n\n" +
+                           "• Optimized complex SQL queries to reduce data-retrieval times by 25%";
+                }
+                
+                if (message.includes('education') || message.includes('degree') || message.includes('study')) {
+                    return "Gavriel's education includes:\n\n" +
+                           "• **Postgraduate Certificate in Applied AI Solutions Development** from George Brown College (2025-Present)\n\n" +
+                           "• **Bachelor of Arts in Computer Science** from York University (2017-2023)\n\n" +
+                           "• **Google Advanced Data Analytics Professional Certificate** (2024)\n\n" +
+                           "• **Google Data Analytics Professional Certificate** (2024)";
+                }
+                
+                // Default response
+                return "Thanks for your interest in Gavriel's portfolio! He's an aspiring Data Scientist and AI Developer with experience in Python, machine learning, and data visualization. Feel free to ask about his projects, skills, education, or how to contact him.";
             }
 
             addMessage(content, sender) {
@@ -1356,38 +1305,26 @@
                 }
             }
 
-            async resetChat() {
-                try {
-                    await fetch(`${this.apiUrl}/reset`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            session_id: this.sessionId
-                        })
-                    });
-                    
-                    // Clear messages
-                    const messagesContainer = document.getElementById('chatbot-messages');
-                    messagesContainer.innerHTML = `
-                        <div class="message bot-message">
-                            <div class="message-content">
-                                👋 Hi! I'm Gavriel's AI assistant. Ask me anything about his experience, projects, or skills!
-                            </div>
-                            <div class="message-time">${this.getCurrentTime()}</div>
+            resetChat() {
+                // Clear messages
+                const messagesContainer = document.getElementById('chatbot-messages');
+                messagesContainer.innerHTML = `
+                    <div class="message bot-message">
+                        <div class="message-content">
+                            👋 Hi! I'm Gavriel's AI assistant. Ask me anything about his experience, projects, or skills!
                         </div>
-                    `;
-                    
-                    // Show suggestions again
-                    document.getElementById('chatbot-suggestions').style.display = 'block';
-                    
-                    // Generate new session ID
-                    this.sessionId = this.generateSessionId();
-                    
-                } catch (error) {
-                    console.error('Failed to reset chat:', error);
-                }
+                        <div class="message-time">${this.getCurrentTime()}</div>
+                    </div>
+                `;
+                
+                // Show suggestions again
+                document.getElementById('chatbot-suggestions').style.display = 'block';
+                
+                // Reset conversation history
+                this.conversations = [];
+                
+                // Generate new session ID
+                this.sessionId = this.generateSessionId();
             }
 
             getCurrentTime() {
