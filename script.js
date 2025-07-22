@@ -330,6 +330,8 @@ class PortfolioChatbot {
         const message = this.chatbotInput.value.trim();
         if (!message) return;
         
+        console.log('Sending message:', message); // Debug log
+        
         // Add user message
         this.addMessage(message, 'user');
         this.chatbotInput.value = '';
@@ -352,6 +354,12 @@ class PortfolioChatbot {
                     session_id: this.sessionId
                 })
             });
+            
+            console.log('Response status:', response.status); // Debug log
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             
             // Remove typing indicator before streaming
             this.removeTypingIndicator();
@@ -378,6 +386,7 @@ class PortfolioChatbot {
                     if (line.startsWith('data: ')) {
                         try {
                             const data = JSON.parse(line.slice(6));
+                            console.log('Received data:', data); // Debug log
                             
                             if (data.error) {
                                 messageContent.innerHTML = '<p>Sorry, I encountered an error. Please try again.</p>';
@@ -405,7 +414,7 @@ class PortfolioChatbot {
         } catch (error) {
             console.error('Chat error:', error);
             this.removeTypingIndicator();
-            this.addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
+            this.addMessage('Sorry, I\'m having trouble connecting. Please try again later. Error: ' + error.message, 'bot');
         }
     }
     

@@ -231,7 +231,9 @@ app.post('/chat/stream', (req, res) => {
         const { message, session_id = 'default' } = req.body;
         
         if (!message || !message.trim()) {
-            return res.status(400).json({ error: 'No message provided' });
+            res.write(`data: ${JSON.stringify({ error: 'No message provided' })}\n\n`);
+            res.end();
+            return;
         }
         
         // Set headers for Server-Sent Events
@@ -244,6 +246,7 @@ app.post('/chat/stream', (req, res) => {
         });
         
         const response = getChatbotResponse(message.trim());
+        console.log('Generated response:', response); // Debug log
         
         // Stream the response word by word
         const words = response.split(' ');
@@ -271,13 +274,25 @@ app.post('/chat/stream', (req, res) => {
         // Handle client disconnect
         req.on('close', () => {
             clearInterval(streamInterval);
-            res.end();
+            if (!res.headersSent) {
+                res.end();
+            }
         });
         
     } catch (error) {
         console.error('Streaming error:', error);
-        res.write(`data: ${JSON.stringify({ error: 'Streaming error occurred' })}\n\n`);
-        res.end();
+        if (!res.headersSent) {
+            res.writeHead(200, {
+                'Content-Type': 'text/event-stream',
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+                'Access-Control-Allow-Origin': '*'
+            });
+        }
+        if (!res.finished) {
+            res.write(`data: ${JSON.stringify({ error: 'Streaming error occurred' })}\n\n`);
+            res.end();
+        }
     }
 });
 
