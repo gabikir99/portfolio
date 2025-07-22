@@ -226,6 +226,61 @@ app.post('/reset', (req, res) => {
     });
 });
 
+app.post('/chat/stream', (req, res) => {
+    try {
+        const { message, session_id = 'default' } = req.body;
+        
+        if (!message || !message.trim()) {
+            return res.status(400).json({ error: 'No message provided' });
+        }
+        
+        // Set headers for Server-Sent Events
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Cache-Control'
+        });
+        
+        const response = getChatbotResponse(message.trim());
+        
+        // Stream the response word by word
+        const words = response.split(' ');
+        let wordIndex = 0;
+        
+        const streamInterval = setInterval(() => {
+            if (wordIndex < words.length) {
+                const chunk = {
+                    content: words[wordIndex] + ' ',
+                    timestamp: new Date().toISOString(),
+                    session_id,
+                    formatted: true
+                };
+                
+                res.write(`data: ${JSON.stringify(chunk)}\n\n`);
+                wordIndex++;
+            } else {
+                // Send completion signal
+                res.write(`data: ${JSON.stringify({ done: true })}\n\n`);
+                res.end();
+                clearInterval(streamInterval);
+            }
+        }, 50); // 50ms delay between words
+        
+        // Handle client disconnect
+        req.on('close', () => {
+            clearInterval(streamInterval);
+            res.end();
+        });
+        
+    } catch (error) {
+        console.error('Streaming error:', error);
+        res.write(`data: ${JSON.stringify({ error: 'Streaming error occurred' })}\n\n`);
+        res.end();
+    }
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 Gavriel's Portfolio Server running on port ${PORT}`);

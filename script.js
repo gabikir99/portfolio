@@ -342,7 +342,7 @@ class PortfolioChatbot {
         this.showTypingIndicator();
         
         try {
-            const response = await fetch('/chat', {
+            const response = await fetch('/chat/stream', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -353,21 +353,80 @@ class PortfolioChatbot {
                 })
             });
             
-            const data = await response.json();
-            
-            // Remove typing indicator
+            // Remove typing indicator before streaming
             this.removeTypingIndicator();
             
-            if (data.response) {
-                this.addMessage(data.response, 'bot');
-            } else {
-                this.addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            // Create bot message container for streaming
+            const messageDiv = this.createMessageContainer('bot');
+            const messageContent = messageDiv.querySelector('.message-content');
+            
+            // Handle streaming response
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            
+            while (true) {
+                const { done, value } = await reader.read();
+                
+                if (done) break;
+                
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); // Keep incomplete line in buffer
+                
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        try {
+                            const data = JSON.parse(line.slice(6));
+                            
+                            if (data.error) {
+                                messageContent.innerHTML = '<p>Sorry, I encountered an error. Please try again.</p>';
+                                break;
+                            }
+                            
+                            if (data.done) {
+                                // Format the final message content
+                                const finalContent = this.formatMessage(messageContent.textContent);
+                                messageContent.innerHTML = finalContent;
+                                break;
+                            }
+                            
+                            if (data.content) {
+                                messageContent.textContent += data.content;
+                                this.scrollToBottom();
+                            }
+                        } catch (e) {
+                            console.error('Error parsing streaming data:', e);
+                        }
+                    }
+                }
             }
+            
         } catch (error) {
             console.error('Chat error:', error);
             this.removeTypingIndicator();
             this.addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
         }
+    }
+    
+    createMessageContainer(sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        avatar.innerHTML = sender === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        
+        this.chatbotMessages.appendChild(messageDiv);
+        this.scrollToBottom();
+        
+        return messageDiv;
     }
     
     addMessage(content, sender) {
