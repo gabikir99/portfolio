@@ -3,1599 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gavriel Kirichenko - Data Scientist &amp; AI Developer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(-45deg, #38b2ac, #6b46c1, #2d3748, #805ad5);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            overflow-x: hidden;
-            padding-top: 60px;
-        }
-
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Top navigation */
-        .top-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .top-nav a {
-            color: #333;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background 0.3s;
-        }
-
-        .top-nav a:hover {
-            background: rgba(56, 178, 172, 0.2);
-        }
-
-        /* Header */
-        .header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem 0;
-            text-align: center;
-            border-radius: 20px;
-            margin: 2rem auto;
-            animation: slideDown 1s ease-out;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            color: white;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.5); }
-            to { text-shadow: 2px 2px 4px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.8); }
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 1rem;
-        }
-
-        .contact-info {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-top: 1rem;
-        }
-
-        .contact-item {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .contact-item:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        /* Section Styling */
-        .section {
-            background: rgba(255, 255, 255, 0.9);
-            margin: 2rem auto;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            opacity: 0;
-            transform: translateY(50px);
-            animation: fadeInUp 0.8s ease forwards;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .section:nth-child(even) {
-            animation-delay: 0.2s;
-        }
-
-        .section:nth-child(odd) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section h2 {
-            color: #2d3748;
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            position: relative;
-            padding-bottom: 1rem;
-        }
-
-        .section h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(45deg, #38b2ac, #6b46c1);
-            border-radius: 2px;
-        }
-
-        /* About Me */
-        .about-content {
-            font-size: 1.2rem;
-            text-align: center;
-            line-height: 1.8;
-            color: #4a5568;
-        }
-
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .skill-category {
-            background: linear-gradient(135deg, #38b2ac 0%, #6b46c1 100%);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .skill-category:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .skill-category h3 {
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .skill-tag:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.1);
-        }
-
-        /* Projects */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .project-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
-        }
-
-        .project-header {
-            background: linear-gradient(135deg, #38b2ac 0%, #6b46c1 100%);
-            color: white;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .project-content {
-            padding: 1.5rem;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .tech-badge {
-            background: #e2e8f0;
-            color: #4a5568;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .tech-badge:hover {
-            background: #cbd5e0;
-            transform: scale(1.1);
-        }
-
-        /* Education & Work */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 1rem;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: linear-gradient(to bottom, #38b2ac, #6b46c1);
-            border-radius: 2px;
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 2rem;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            margin-left: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2.5rem;
-            top: 2rem;
-            width: 15px;
-            height: 15px;
-            background: #38b2ac;
-            border: 3px solid white;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        }
-
-        /* Download Section */
-        .download-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .download-btn {
-            background: linear-gradient(135deg, #38b2ac 0%, #6b46c1 100%);
-            color: white;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .download-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s;
-        }
-
-        .download-btn:hover::before {
-            left: 100%;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        }
-
-        /* Floating Animation */
-        .floating {
-            animation: floating 6s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .contact-info {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .top-nav {
-                flex-wrap: wrap;
-                padding: 8px 10px;
-            }
-            
-            .skills-grid,
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .download-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-        /* Particle Effect */
-        .particle {
-            position: fixed;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: particleMove 10s linear infinite;
-        }
-
-        @keyframes particleMove {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-    </style>
+    <title>Gavriel Kirichenko - Data Scientist & AI Developer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <nav class="top-nav">
-        <a href="#about">About</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#education">Education</a>
-        <a href="#experience">Experience</a>
-        <a href="#resume">Resume</a>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">GK</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
     </nav>
-    <!-- Header -->
-    <div class="container">
-        <div class="header floating">
-            <h1>Gavriel Kirichenko</h1>
-            <p>Aspiring Data Scientist and AI Developer</p>
-            <p>Bradford, Ontario</p>
-            <div class="contact-info">
-                <a href="mailto:gabikir1999@gmail.com" class="contact-item">📧 Email</a>
-                <a href="tel:+16476083345" class="contact-item">📞 +1 (647) 608-3345</a>
-                <a href="https://www.linkedin.com/in/gavrielkirichenko/" class="contact-item" target="_blank">💼 LinkedIn</a>
-                <a href="https://github.com/gabikir99" class="contact-item" target="_blank">💻 GitHub</a>
-                <a href="https://www.kaggle.com/gavrielkirichenko" class="contact-item" target="_blank">📊 Kaggle</a>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        <span class="greeting">Hi, I'm</span>
+                        <span class="name">Gavriel Kirichenko</span>
+                    </h1>
+                    <p class="hero-subtitle">Data Scientist & AI Developer</p>
+                    <p class="hero-description">
+                        Building ML solutions that matter. Transforming data into actionable insights 
+                        and creating AI systems that solve real-world problems.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn btn-primary">View My Work</a>
+                        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-elements">
+                        <div class="floating-card" data-tech="Python">
+                            <i class="fab fa-python"></i>
+                        </div>
+                        <div class="floating-card" data-tech="AI/ML">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="floating-card" data-tech="Data">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="floating-card" data-tech="Cloud">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
 
-        <!-- About Me -->
-        <div id="about" class="section">
-            <h2>About Me</h2>
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Passionate about AI and Data Science</p>
+            </div>
             <div class="about-content">
-                <p>Analytical and results-driven Data Scientist and AI Developer with experience building ML models, deploying real-time vision systems, and delivering insights through data storytelling. Proficient in Python, deep learning, and visualization tools. Currently pursuing a Postgraduate Certificate in Applied AI Solutions Development at George Brown College, with a solid Computer Science foundation from York University. Eager to contribute to data-driven innovation in analytics or AI roles.</p>
+                <div class="about-text">
+                    <p class="about-description">
+                        I'm a passionate Data Scientist and AI Developer currently pursuing Applied AI Solutions 
+                        Development at George Brown College. With a solid foundation in Computer Science from 
+                        York University, I specialize in transforming complex data into actionable insights.
+                    </p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="15">0</div>
+                            <div class="stat-label">Projects Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="3">0</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-target="95">0</div>
+                            <div class="stat-label">Accuracy Rate</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="image-container">
+                        <div class="image-placeholder">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- Technical Skills -->
-        <div id="skills" class="section">
-            <h2>Technical Skills</h2>
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Technical Skills</h2>
+                <p class="section-subtitle">Technologies I work with</p>
+            </div>
             <div class="skills-grid">
                 <div class="skill-category">
-                    <h3>Programming &amp; ML Frameworks</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">TensorFlow/Keras</span>
-                        <span class="skill-tag">PyTorch</span>
-                        <span class="skill-tag">scikit-learn</span>
-                        <span class="skill-tag">Hugging Face</span>
+                    <h3 class="category-title">
+                        <i class="fas fa-code"></i>
+                        Programming & ML
+                    </h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">TensorFlow</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">PyTorch</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">scikit-learn</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="92%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="skill-category">
-                    <h3>Signal Processing &amp; Computer Vision</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">OpenCV</span>
-                        <span class="skill-tag">Frame Differencing</span>
-                        <span class="skill-tag">Contour Detection</span>
-                        <span class="skill-tag">Time-Series Pipelines</span>
+                    <h3 class="category-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Data & Analytics
+                    </h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">Pandas</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">SQL</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="88%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Tableau</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Power BI</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="80%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="skill-category">
-                    <h3>Data Science &amp; Analytics</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">pandas</span>
-                        <span class="skill-tag">NumPy</span>
-                        <span class="skill-tag">Regression/Classification</span>
-                        <span class="skill-tag">Feature Engineering</span>
-                        <span class="skill-tag">Excel</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Visualization &amp; BI</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">Tableau</span>
-                        <span class="skill-tag">Power BI</span>
-                        <span class="skill-tag">Matplotlib</span>
-                        <span class="skill-tag">Seaborn</span>
-                        <span class="skill-tag">PowerPoint</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>DevOps &amp; Cloud</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">AWS</span>
-                        <span class="skill-tag">Docker</span>
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">GitHub Actions</span>
-                        <span class="skill-tag">CI/CD</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Machine Learning Concepts</h3>
-                    <div class="skill-tags">
-                        <span class="skill-tag">CNNs, RNNs, LSTMs</span>
-                        <span class="skill-tag">NLP &amp; Sentiment Analysis</span>
-                        <span class="skill-tag">Model Evaluation</span>
-                        <span class="skill-tag">Hyperparameter Tuning</span>
-                        <span class="skill-tag">Cross-Validation</span>
+                    <h3 class="category-title">
+                        <i class="fas fa-cloud"></i>
+                        DevOps & Cloud
+                    </h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">AWS</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Docker</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Git</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">CI/CD</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-width="70%"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Projects -->
-        <div id="projects" class="section">
-            <h2>Featured Projects</h2>
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">Some of my recent work</p>
+            </div>
             <div class="projects-grid">
                 <div class="project-card">
-                    <div class="project-header">
-                        <h3>AI-Powered Career Coaching Chatbot</h3>
+                    <div class="project-image">
+                        <i class="fas fa-robot"></i>
                     </div>
                     <div class="project-content">
-                        <p>Built a production-grade chatbot using Python, Flask, OpenAI GPT-4 API, and custom memory management. Automated PDF resume extraction pipeline achieving 95%+ text extraction accuracy with dynamic prompt templates and user context retention.</p>
+                        <h3 class="project-title">LLM-Powered Banking Assistant</h3>
+                        <p class="project-description">
+                            Production-grade AI chatbot with RAG architecture using OpenAI API, 
+                            LangChain, and ChromaDB for contextual retrieval.
+                        </p>
                         <div class="project-tech">
-                            <span class="tech-badge">Python</span>
-                            <span class="tech-badge">Flask</span>
-                            <span class="tech-badge">OpenAI GPT-4</span>
-                            <span class="tech-badge">PDF Processing</span>
+                            <span class="tech-tag">OpenAI API</span>
+                            <span class="tech-tag">LangChain</span>
+                            <span class="tech-tag">FastAPI</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/gabikir99/llm-chatbot" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-header">
-                        <h3>LLM-Powered Banking Assistant</h3>
+                    <div class="project-image">
+                        <i class="fas fa-heart"></i>
                     </div>
                     <div class="project-content">
-                        <p>Built an AI-powered chatbot using OpenAI API, LangChain, and FastAPI. Integrated ChromaDB vector store for RAG-style contextual retrieval and Model Context Protocol (MCP) for seamless communication with external banking systems.</p>
+                        <h3 class="project-title">Heart Disease Prediction</h3>
+                        <p class="project-description">
+                            Collaborative ML project achieving high-accuracy classification 
+                            for heart disease prediction using advanced feature engineering.
+                        </p>
                         <div class="project-tech">
-                            <span class="tech-badge">OpenAI API</span>
-                            <span class="tech-badge">LangChain</span>
-                            <span class="tech-badge">FastAPI</span>
-                            <span class="tech-badge">ChromaDB</span>
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">scikit-learn</span>
+                            <span class="tech-tag">Pandas</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/gabikir99/GROUP1_HEART-DISEASE-" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-header">
-                        <h3>Cybersecurity Visualization Dashboard</h3>
+                    <div class="project-image">
+                        <i class="fas fa-microscope"></i>
                     </div>
                     <div class="project-content">
-                        <p>Used Tableau Prep Builder to clean and enrich cybersecurity incident logs. Designed interactive dashboards with geospatial maps, temporal trends, and Pareto analyses to highlight attack hotspots and support security decision-making.</p>
+                        <h3 class="project-title">Malaria Cell Classification</h3>
+                        <p class="project-description">
+                            Computer vision system for automated classification of malaria-infected 
+                            cells using deep learning and CNN architectures.
+                        </p>
                         <div class="project-tech">
-                            <span class="tech-badge">Tableau</span>
-                            <span class="tech-badge">Prep Builder</span>
-                            <span class="tech-badge">Data Visualization</span>
-                            <span class="tech-badge">Security Analytics</span>
+                            <span class="tech-tag">Deep Learning</span>
+                            <span class="tech-tag">OpenCV</span>
+                            <span class="tech-tag">CNN</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/gabikir99/malaria_cell_images-_dataset_group7" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
                 <div class="project-card">
-                    <div class="project-header">
-                        <h3>Chess Game Outcome Predictor</h3>
+                    <div class="project-image">
+                        <i class="fas fa-feather-alt"></i>
                     </div>
                     <div class="project-content">
-                        <p>Collaborated with a team to develop a chess outcome-prediction model using Python and scikit-learn on historical Kaggle data. Led data cleaning and feature engineering, transforming raw moves and player ratings to improve accuracy.</p>
+                        <h3 class="project-title">Shakespeare Text Generator</h3>
+                        <p class="project-description">
+                            LSTM-based text generation model that mimics Shakespearean writing 
+                            style using character-level sequence modeling.
+                        </p>
                         <div class="project-tech">
-                            <span class="tech-badge">Python</span>
-                            <span class="tech-badge">scikit-learn</span>
-                            <span class="tech-badge">Random Forests</span>
-                            <span class="tech-badge">Feature Engineering</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">LSTM</span>
+                            <span class="tech-tag">NLP</span>
                         </div>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Malaria Cell Classification with Vision Transformers</h3>
-                    </div>
-                    <div class="project-content">
-                        <p>Trained CNN, VGG16, and ViT models to detect malaria in blood smears, achieving around 93% accuracy with transfer learning and deploying a Streamlit app for instant predictions.</p>
-                        <div class="project-tech">
-                            <span class="tech-badge">VGG16</span>
-                            <span class="tech-badge">Vision Transformer</span>
-                            <span class="tech-badge">Streamlit</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Garbage Classification with YOLOv8</h3>
-                    </div>
-                    <div class="project-content">
-                        <p>Optimized a YOLOv8 detector with Optuna to sort waste into six material categories for recycling, archiving the trained model and results for deployment.</p>
-                        <div class="project-tech">
-                            <span class="tech-badge">YOLOv8</span>
-                            <span class="tech-badge">Optuna</span>
-                            <span class="tech-badge">Object Detection</span>
+                        <div class="project-links">
+                            <a href="https://github.com/gabikir99/shakespeare-text-generator" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Education -->
-        <div id="education" class="section">
-            <h2>Education</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Postgraduate Certificate in Applied AI Solutions Development</h3>
-                    <p><strong>George Brown College</strong> | January 2025 – Present</p>
-                    <p>Built and deployed supervised and unsupervised models with scikit-learn and TensorFlow/Keras. Designed and implemented end-to-end AI pipelines including data ingestion, cleansing, and feature engineering using Python and SQL.</p>
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-subtitle">Ready to discuss AI, data science, and potential collaborations</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <a href="mailto:gabikir1999@gmail.com">gabikir1999@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <a href="tel:+16476083345">(647) 608-3345</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h4>Location</h4>
+                            <span>Bradford, Ontario</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="timeline-item">
-                    <h3>Bachelor of Arts in Computer Science</h3>
-                    <p><strong>York University</strong> | September 2017 – December 2023</p>
-                    <p>Implemented inheritance, polymorphism, and design patterns. Performed time- and space-complexity analyses and implemented algorithms like Quick Sort, Merge Sort, Dijkstra's, and A* in Java. Designed interactive GUIs using JavaFX.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Google Advanced Data Analytics Professional Certificate</h3>
-                    <p><strong>Google/Coursera</strong> | 2024</p>
-                    <p>Explored machine learning fundamentals, covering algorithm selection, training/validation workflows, and performance metrics in "The Nuts and Bolts of Machine Learning".</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>Google Data Analytics Professional Certificate</h3>
-                    <p><strong>Google/Coursera</strong> | 2024</p>
-                    <p>Mastered data-cleaning &amp; preparation techniques in spreadsheets and SQL, including PivotTables, VLOOKUP, joins, filtering. Built interactive visualizations in Tableau and learned principles of effective data storytelling.</p>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/gavrielkirichenko/" class="social-link" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/gabikir99" class="social-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://www.kaggle.com/gavrielkirichenko" class="social-link" target="_blank">
+                        <i class="fab fa-kaggle"></i>
+                        <span>Kaggle</span>
+                    </a>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Work Experience -->
-        <div id="experience" class="section">
-            <h2>Work Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>Junior Python Developer Intern</h3>
-                    <p><strong>YLTSP SOFTWARE Inc.</strong> | January 2023 – August 2023</p>
-                    <ul>
-                        <li>Led end-to-end A/B testing in Python and SQL, boosting user engagement by 12%</li>
-                        <li>Designed OOP-driven Python modules to automate ETL pipelines for experiment data</li>
-                        <li>Collaborated with front-end teams to deploy winning variants 20% faster, fostering open communication across departments</li>
-                        <li>Optimized complex SQL queries to reduce average data-retrieval times by 25%</li>
-                        <li>Developed data analysis solutions using Python, SQL, and Excel to drive data-driven decision-making</li>
-                    </ul>
-                </div>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Gavriel Kirichenko. All rights reserved.</p>
+                <p>Built with passion for AI and data science</p>
             </div>
         </div>
+    </footer>
 
-        <!-- Download Section -->
-        <div id="resume" class="section">
-            <h2>Resume</h2>
-            <div class="download-buttons">
-                <a href="Resume.pdf" class="download-btn" download>📄 Download Resume</a>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all sections
-        document.querySelectorAll('.section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Add interactive hover effects
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-15px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-
-        // Particle effect
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + 'vw';
-            particle.style.width = particle.style.height = Math.random() * 10 + 5 + 'px';
-            particle.style.animationDuration = Math.random() * 10 + 10 + 's';
-            document.body.appendChild(particle);
-            
-            setTimeout(() => {
-                particle.remove();
-            }, 20000);
-        }
-
-        // Create particles periodically
-        setInterval(createParticle, 3000);
-
-        // Smooth scrolling for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Add typing animation to the title
-        function typeWriter() {
-            const title = document.querySelector('.header h1');
-            const text = title.textContent;
-            title.textContent = '';
-            let i = 0;
-            
-            function type() {
-                if (i < text.length) {
-                    title.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, 100);
-                }
-            }
-            
-            setTimeout(type, 1000);
-        }
-
-        // Start typing animation when page loads
-        window.addEventListener('load', typeWriter);
-
-        // Add skill level animations
-        document.querySelectorAll('.skill-category').forEach((category, index) => {
-            category.style.animationDelay = (index * 0.1) + 's';
-            category.addEventListener('click', () => {
-                category.style.transform = 'scale(1.1) rotate(5deg)';
-                setTimeout(() => {
-                    category.style.transform = 'scale(1) rotate(0deg)';
-                }, 200);
-            });
-        });
-
-        // Portfolio Chatbot Integration - Standalone Version
-        class PortfolioChatbot {
-            constructor() {
-                this.sessionId = this.generateSessionId();
-                this.isOpen = false;
-                this.isTyping = false;
-                this.conversations = [];
-                this.init();
-            }
-
-            generateSessionId() {
-                return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            }
-
-            init() {
-                this.createChatbot();
-                this.loadSuggestions();
-                this.addEventListeners();
-            }
-
-            createChatbot() {
-                // Create chatbot HTML structure
-                const chatbotHTML = `
-                    <div id="portfolio-chatbot" class="chatbot-container">
-                        <!-- Chatbot Toggle Button -->
-                        <div id="chatbot-toggle" class="chatbot-toggle">
-                            <div class="toggle-icon">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4 17.17V4H20V16Z" fill="white"/>
-                                    <circle cx="7" cy="9" r="1" fill="white"/>
-                                    <circle cx="12" cy="9" r="1" fill="white"/>
-                                    <circle cx="17" cy="9" r="1" fill="white"/>
-                                </svg>
-                            </div>
-                            <div class="toggle-text">Ask about Gavriel</div>
-                        </div>
-
-                        <!-- Chatbot Window -->
-                        <div id="chatbot-window" class="chatbot-window">
-                            <div id="resize-handle" class="resize-handle"></div>
-                            <!-- Header -->
-                            <div class="chatbot-header">
-                                <div class="header-info">
-                                    <div class="avatar">🤖</div>
-                                    <div class="header-text">
-                                        <div class="name">AI Assistant</div>
-                                        <div class="status">Ask me about Gavriel's experience!</div>
-                                    </div>
-                                </div>
-                                <div class="header-actions">
-                                    <button id="chatbot-minimize" class="action-btn">−</button>
-                                    <button id="chatbot-close" class="action-btn">×</button>
-                                </div>
-                            </div>
-
-                            <!-- Messages Area -->
-                            <div id="chatbot-messages" class="chatbot-messages">
-                                <div class="message bot-message">
-                                    <div class="message-content">
-                                        👋 Hi! I'm Gavriel's AI assistant. Ask me anything about his experience, projects, or skills!
-                                    </div>
-                                    <div class="message-time">${this.getCurrentTime()}</div>
-                                </div>
-                            </div>
-
-                            <!-- Suggestions -->
-                            <div id="chatbot-suggestions" class="chatbot-suggestions">
-                                <div class="suggestions-title">💡 Try asking:</div>
-                                <div id="suggestions-list" class="suggestions-list">
-                                    <!-- Suggestions will be loaded here -->
-                                </div>
-                            </div>
-
-                            <!-- Input Area -->
-                            <div class="chatbot-input">
-                                <div class="input-container">
-                                    <input type="text" id="chatbot-input" placeholder="Ask about Gavriel's experience..." maxlength="500">
-                                    <button id="chatbot-send" class="send-btn">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M2.01 21L23 12L2.01 3L2 10L17 12L2 14L2.01 21Z" fill="currentColor"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="input-actions">
-                                    <button id="reset-chat" class="reset-btn">🔄 Reset Chat</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-
-                // Add chatbot to the page
-                document.body.insertAdjacentHTML('beforeend', chatbotHTML);
-
-                // Add chatbot styles
-                this.addChatbotStyles();
-            }
-
-            addChatbotStyles() {
-                const styles = `
-                    <style>
-                        .chatbot-container {
-                            position: fixed;
-                            bottom: 20px;
-                            right: 20px;
-                            z-index: 1000;
-                            font-family: Arial, sans-serif;
-                        }
-
-                        .chatbot-toggle {
-                            display: flex;
-                            align-items: center;
-                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                            color: white;
-                            padding: 12px 20px;
-                            border-radius: 30px;
-                            cursor: pointer;
-                            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-                            transition: all 0.3s ease;
-                            gap: 10px;
-                        }
-
-                        .chatbot-toggle:hover {
-                            transform: translateY(-2px);
-                            box-shadow: 0 6px 25px rgba(0,0,0,0.3);
-                        }
-
-                        .toggle-icon {
-                            animation: bounce 2s infinite;
-                        }
-
-                        @keyframes bounce {
-                            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-                            40% { transform: translateY(-5px); }
-                            60% { transform: translateY(-3px); }
-                        }
-
-                        .chatbot-window {
-                            position: absolute;
-                            bottom: 70px;
-                            right: 0;
-                            width: 350px;
-                            height: 500px;
-                            background: white;
-                            border-radius: 15px;
-                            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-                            display: none;
-                            flex-direction: column;
-                            overflow: hidden;
-                            border: 1px solid rgba(255,255,255,0.3);
-                            resize: none;
-                            min-width: 300px;
-                            min-height: 400px;
-                            max-width: 800px;
-                            max-height: 800px;
-                        }
-
-                        .chatbot-window.open {
-                            display: flex;
-                            animation: slideUp 0.3s ease-out;
-                        }
-
-                        @keyframes slideUp {
-                            from { transform: translateY(20px); opacity: 0; }
-                            to { transform: translateY(0); opacity: 1; }
-                        }
-
-                        .chatbot-header {
-                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                            color: white;
-                            padding: 15px;
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            cursor: default;
-                            position: relative;
-                            z-index: 5;
-                        }
-
-                        .header-info {
-                            display: flex;
-                            align-items: center;
-                            gap: 10px;
-                        }
-
-                        .avatar {
-                            font-size: 24px;
-                        }
-
-                        .name {
-                            font-weight: bold;
-                            font-size: 14px;
-                        }
-
-                        .status {
-                            font-size: 12px;
-                            opacity: 0.9;
-                        }
-
-                        .header-actions {
-                            display: flex;
-                            gap: 5px;
-                        }
-
-                        .action-btn {
-                            background: none;
-                            border: none;
-                            color: white;
-                            font-size: 18px;
-                            cursor: pointer;
-                            padding: 5px;
-                            border-radius: 3px;
-                            transition: background 0.2s;
-                        }
-
-                        .action-btn:hover {
-                            background: rgba(255,255,255,0.2);
-                        }
-
-                        .chatbot-messages {
-                            flex: 1;
-                            overflow-y: auto;
-                            padding: 15px;
-                            background: #f8f9fa;
-                        }
-
-                        .message {
-                            margin-bottom: 15px;
-                            max-width: 85%;
-                        }
-
-                        .user-message {
-                            margin-left: auto;
-                        }
-
-                        .user-message .message-content {
-                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                            color: white;
-                            padding: 10px 15px;
-                            border-radius: 18px 18px 5px 18px;
-                        }
-
-                        .bot-message .message-content {
-                            background: white;
-                            color: #333;
-                            padding: 10px 15px;
-                            border-radius: 18px 18px 18px 5px;
-                            border: 1px solid #e1e5e9;
-                        }
-
-                        .message-time {
-                            font-size: 11px;
-                            color: #666;
-                            margin-top: 5px;
-                            text-align: right;
-                        }
-
-                        .bot-message .message-time {
-                            text-align: left;
-                        }
-
-                        .typing-indicator {
-                            display: flex;
-                            align-items: center;
-                            gap: 5px;
-                            padding: 10px 15px;
-                            background: white;
-                            border-radius: 18px 18px 18px 5px;
-                            border: 1px solid #e1e5e9;
-                        }
-
-                        .typing-dots {
-                            display: flex;
-                            gap: 3px;
-                        }
-
-                        .typing-dot {
-                            width: 6px;
-                            height: 6px;
-                            background: #667eea;
-                            border-radius: 50%;
-                            animation: typing 1.4s infinite;
-                        }
-
-                        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-                        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-                        @keyframes typing {
-                            0%, 60%, 100% { transform: translateY(0); }
-                            30% { transform: translateY(-10px); }
-                        }
-
-                        .chatbot-suggestions {
-                            padding: 10px 15px;
-                            background: #f8f9fa;
-                            border-top: 1px solid #e1e5e9;
-                        }
-
-                        .suggestions-title {
-                            font-size: 12px;
-                            color: #666;
-                            margin-bottom: 8px;
-                        }
-
-                        .suggestions-list {
-                            display: flex;
-                            flex-wrap: wrap;
-                            gap: 5px;
-                        }
-
-                        .suggestion-chip {
-                            background: white;
-                            border: 1px solid #e1e5e9;
-                            padding: 5px 10px;
-                            border-radius: 15px;
-                            font-size: 11px;
-                            cursor: pointer;
-                            transition: all 0.2s;
-                        }
-
-                        .suggestion-chip:hover {
-                            background: #667eea;
-                            color: white;
-                            transform: translateY(-1px);
-                        }
-
-                        .chatbot-input {
-                            padding: 15px;
-                            background: white;
-                            border-top: 1px solid #e1e5e9;
-                        }
-
-                        .input-container {
-                            display: flex;
-                            gap: 10px;
-                            align-items: center;
-                        }
-
-                        #chatbot-input {
-                            flex: 1;
-                            padding: 10px 15px;
-                            border: 1px solid #e1e5e9;
-                            border-radius: 20px;
-                            outline: none;
-                            font-size: 14px;
-                        }
-
-                        #chatbot-input:focus {
-                            border-color: #667eea;
-                        }
-
-                        .send-btn {
-                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                            color: white;
-                            border: none;
-                            width: 40px;
-                            height: 40px;
-                            border-radius: 50%;
-                            cursor: pointer;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            transition: transform 0.2s;
-                        }
-
-                        .send-btn:hover {
-                            transform: scale(1.1);
-                        }
-
-                        .send-btn:disabled {
-                            opacity: 0.5;
-                            cursor: not-allowed;
-                            transform: none;
-                        }
-
-                        .input-actions {
-                            margin-top: 8px;
-                            text-align: center;
-                        }
-
-                        .reset-btn {
-                            background: none;
-                            border: none;
-                            color: #666;
-                            font-size: 11px;
-                            cursor: pointer;
-                            padding: 5px 10px;
-                            border-radius: 10px;
-                            transition: background 0.2s;
-                        }
-
-                        .reset-btn:hover {
-                            background: #f0f0f0;
-                        }
-
-                        /* Resize handle styling */
-                        .resize-handle {
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            width: 18px;
-                            height: 18px;
-                            cursor: nwse-resize;
-                            border-top-left-radius: 15px;
-                            z-index: 10;
-                            /* Visible striped corner so users know it's draggable */
-                            background: repeating-linear-gradient(
-                                135deg,
-                                rgba(118, 75, 162, 0.8) 0,
-                                rgba(118, 75, 162, 0.8) 2px,
-                                rgba(255, 255, 255, 0.8) 2px,
-                                rgba(255, 255, 255, 0.8) 4px
-                            );
-                            clip-path: polygon(0 0, 100% 0, 0 100%);
-                            border-right: 1px solid rgba(118, 75, 162, 0.8);
-                            border-bottom: 1px solid rgba(118, 75, 162, 0.8);
-                        }
-
-                        /* Mobile responsiveness */
-                        @media (max-width: 768px) {
-                            .chatbot-container {
-                                bottom: 10px;
-                                right: 10px;
-                            }
-                            
-                            .chatbot-window {
-                                width: calc(100vw - 20px);
-                                height: 400px;
-                                bottom: 60px;
-                                right: -10px;
-                                resize: vertical;
-                                min-width: calc(100vw - 20px);
-                                max-width: calc(100vw - 20px);
-                            }
-                            
-                            .resize-handle {
-                                display: none;
-                            }
-                        }
-                    </style>
-                `;
-
-                document.head.insertAdjacentHTML('beforeend', styles);
-            }
-
-            addEventListeners() {
-                // Toggle chatbot
-                document.getElementById('chatbot-toggle').addEventListener('click', () => {
-                    this.toggleChatbot();
-                });
-
-                // Close chatbot
-                document.getElementById('chatbot-close').addEventListener('click', () => {
-                    this.closeChatbot();
-                });
-
-                // Minimize chatbot
-                document.getElementById('chatbot-minimize').addEventListener('click', () => {
-                    this.closeChatbot();
-                });
-
-                // Send message
-                document.getElementById('chatbot-send').addEventListener('click', () => {
-                    this.sendMessage();
-                });
-
-                // Enter key to send
-                document.getElementById('chatbot-input').addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        this.sendMessage();
-                    }
-                });
-
-                // Reset chat
-                document.getElementById('reset-chat').addEventListener('click', () => {
-                    this.resetChat();
-                });
-                
-                // Handle resize events to ensure messages container scrolls to bottom
-                const chatWindow = document.getElementById('chatbot-window');
-                if (chatWindow) {
-                    chatWindow.addEventListener('mouseup', () => {
-                        const messagesContainer = document.getElementById('chatbot-messages');
-                        if (messagesContainer) {
-                            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                        }
-                    });
-                }
-                
-                // Enable custom resizing from the top-left corner
-                this.initResize();
-            }
-
-            initResize() {
-                const chatWindow = document.getElementById('chatbot-window');
-                const handle = document.getElementById('resize-handle');
-                if (!chatWindow || !handle) return;
-
-                let startX, startY, startWidth, startHeight;
-                const style = getComputedStyle(chatWindow);
-                const minWidth = parseInt(style.minWidth) || 300;
-                const maxWidth = parseInt(style.maxWidth) || 800;
-                const minHeight = parseInt(style.minHeight) || 400;
-                const maxHeight = parseInt(style.maxHeight) || 800;
-
-                const onMouseMove = (e) => {
-                    const width = Math.min(Math.max(startWidth + (startX - e.clientX), minWidth), maxWidth);
-                    const height = Math.min(Math.max(startHeight + (startY - e.clientY), minHeight), maxHeight);
-                    chatWindow.style.width = width + 'px';
-                    chatWindow.style.height = height + 'px';
-
-                    const messagesContainer = document.getElementById('chatbot-messages');
-                    if (messagesContainer) {
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                    }
-                };
-
-                const onMouseUp = () => {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.removeEventListener('mouseup', onMouseUp);
-                };
-
-                handle.addEventListener('mousedown', (e) => {
-                    e.preventDefault();
-                    startX = e.clientX;
-                    startY = e.clientY;
-                    startWidth = parseInt(style.width);
-                    startHeight = parseInt(style.height);
-                    document.addEventListener('mousemove', onMouseMove);
-                    document.addEventListener('mouseup', onMouseUp);
-                });
-            }
-
-            toggleChatbot() {
-                const window = document.getElementById('chatbot-window');
-                if (this.isOpen) {
-                    this.closeChatbot();
-                } else {
-                    this.openChatbot();
-                }
-            }
-
-            openChatbot() {
-                const window = document.getElementById('chatbot-window');
-                window.classList.add('open');
-                this.isOpen = true;
-                
-                // Focus input
-                setTimeout(() => {
-                    document.getElementById('chatbot-input').focus();
-                }, 300);
-            }
-
-            closeChatbot() {
-                const window = document.getElementById('chatbot-window');
-                window.classList.remove('open');
-                this.isOpen = false;
-            }
-
-            loadSuggestions() {
-                const suggestions = [
-                    "Tell me about Gavriel's projects",
-                    "What are his technical skills?",
-                    "How can I contact him?",
-                    "What's his experience?",
-                    "Tell me about his education",
-                    "What ML frameworks does he know?"
-                ];
-                
-                const suggestionsList = document.getElementById('suggestions-list');
-                suggestionsList.innerHTML = '';
-                
-                suggestions.forEach(suggestion => {
-                    const chip = document.createElement('div');
-                    chip.className = 'suggestion-chip';
-                    chip.textContent = suggestion;
-                    chip.addEventListener('click', () => {
-                        document.getElementById('chatbot-input').value = suggestion;
-                        this.sendMessage();
-                    });
-                    suggestionsList.appendChild(chip);
-                });
-            }
-
-            sendMessage() {
-                const input = document.getElementById('chatbot-input');
-                const message = input.value.trim();
-                
-                if (!message || this.isTyping) return;
-                
-                // Clear input
-                input.value = '';
-                
-                // Add user message to chat
-                this.addMessage(message, 'user');
-                
-                // Hide suggestions
-                document.getElementById('chatbot-suggestions').style.display = 'none';
-                
-                // Show typing indicator
-                this.showTypingIndicator();
-                
-                // Store conversation
-                this.conversations.push({role: "user", content: message});
-                
-                // Create a message element for the bot response
-                const messagesContainer = document.getElementById('chatbot-messages');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message bot-message';
-                messageDiv.id = 'current-response';
-                
-                const contentDiv = document.createElement('div');
-                contentDiv.className = 'message-content';
-                contentDiv.id = 'streaming-content';
-                
-                const timeDiv = document.createElement('div');
-                timeDiv.className = 'message-time';
-                timeDiv.textContent = this.getCurrentTime();
-                
-                messageDiv.appendChild(contentDiv);
-                messageDiv.appendChild(timeDiv);
-                
-                // Hide typing indicator before adding the streaming message
-                this.hideTypingIndicator();
-                
-                // Add the empty message container
-                messagesContainer.appendChild(messageDiv);
-                
-                // Stream the response character by character
-                const response = this.generateResponse(message);
-                let displayedText = '';
-                let i = 0;
-                
-                const streamText = () => {
-                    if (i < response.length) {
-                        displayedText += response.charAt(i);
-                        
-                        // Process markdown formatting as we go
-                        let formattedText = displayedText;
-                        
-                        // Convert **text** to <strong>text</strong> (only for completed pairs)
-                        formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                        
-                        // Convert *text* to <em>text</em> (only for completed pairs)
-                        formattedText = formattedText.replace(/(?<!\-\s)\*(.*?)\*/g, '<em>$1</em>');
-                        
-                        // Convert bullet points to HTML list items
-                        formattedText = formattedText.replace(/\n\s*•\s+(.*?)(?=\n|$)/g, '\n<li>$1</li>');
-                        
-                        // Convert line breaks to <br>
-                        formattedText = formattedText.replace(/\n\n/g, '<br><br>');
-                        formattedText = formattedText.replace(/\n/g, '<br>');
-                        
-                        contentDiv.innerHTML = formattedText;
-                        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                        i++;
-                        
-                        // Adjust typing speed based on punctuation
-                        let delay = 20; // Base delay in milliseconds
-                        if (['.', '!', '?', '\n'].includes(response.charAt(i-1))) {
-                            delay = 100; // Longer pause after sentence endings
-                        } else if ([',', ';', ':'].includes(response.charAt(i-1))) {
-                            delay = 50; // Medium pause after commas, etc.
-                        }
-                        
-                        setTimeout(streamText, delay);
-                    } else {
-                        // Store the complete response in conversation history
-                        this.conversations.push({role: "assistant", content: response});
-                    }
-                };
-                
-                // Start streaming after a short delay
-                setTimeout(streamText, 200);
-            }
-            
-            generateResponse(message) {
-                // Simple rule-based responses
-                message = message.toLowerCase();
-                
-                // Portfolio-related keywords
-                const portfolioKeywords = [
-                    'project', 'work', 'skill', 'tech', 'framework', 'contact', 'email', 
-                    'phone', 'experience', 'education', 'degree', 'study', 'gavriel', 
-                    'kirichenko', 'portfolio', 'resume', 'cv', 'job', 'career', 'background',
-                    'python', 'data', 'science', 'ai', 'ml', 'developer', 'software', 'coding',
-                    'programming', 'machine learning', 'visualization', 'tableau', 'tensorflow'
-                ];
-                
-                // Check if message is related to portfolio
-                const isPortfolioRelated = portfolioKeywords.some(keyword => message.includes(keyword));
-                
-                // If not portfolio related, return a polite message
-                if (!isPortfolioRelated) {
-                    return "I'm designed to help with questions about Gavriel Kirichenko's portfolio, skills, projects, education, and professional background. I'd be happy to tell you about his experience as a Data Scientist and AI Developer, or how you can contact him. What would you like to know about Gavriel?";
-                }
-                
-                // Portfolio-related responses
-                if (message.includes('project') || message.includes('work')) {
-                    return "Gavriel has worked on several impressive projects including:\n\n" +
-                           "• **AI-Powered Career Coaching Chatbot** - Built with Python, Flask, and OpenAI GPT-4 API\n\n" +
-                           "• **LLM-Powered Banking Assistant** - Using OpenAI API, LangChain, and FastAPI\n\n" +
-                           "• **Cybersecurity Visualization Dashboard** - Created with Tableau\n\n" +
-                           "• **Chess Game Outcome Predictor** - Using Python and scikit-learn\n\n" +
-                           "• **Malaria Cell Classification with ViT** - Transfer learning for medical images\n\n" +
-                           "• **Garbage Classification with YOLOv8** - Waste sorting with object detection";
-                }
-                
-                if (message.includes('skill') || message.includes('tech') || message.includes('framework')) {
-                    return "Gavriel's technical skills include:\n\n" +
-                           "• **Programming & ML**: Python, TensorFlow/Keras, PyTorch, scikit-learn\n\n" +
-                           "• **Computer Vision**: OpenCV, frame differencing, contour detection\n\n" +
-                           "• **Data Science**: pandas, NumPy, regression/classification, feature engineering\n\n" +
-                           "• **Visualization**: Tableau, Power BI, Matplotlib, Seaborn\n\n" +
-                           "• **DevOps & Cloud**: AWS, Docker, Git, GitHub Actions";
-                }
-                
-                if (message.includes('contact') || message.includes('email') || message.includes('phone')) {
-                    return "You can contact Gavriel through:\n\n" +
-                           "• **Email**: gabikir1999@gmail.com\n\n" +
-                           "• **Phone**: +1 (647) 608-3345\n\n" +
-                           "• **LinkedIn**: https://www.linkedin.com/in/gavrielkirichenko/\n\n" +
-                           "• **GitHub**: https://github.com/gabikir99";
-                }
-                
-                if (message.includes('experience') || message.includes('work')) {
-                    return "Gavriel worked as a **Junior Python Developer Intern** at YLTSP SOFTWARE Inc. from January to August 2023, where he:\n\n" +
-                           "• Led A/B testing in Python and SQL, boosting user engagement by 12%\n\n" +
-                           "• Designed OOP-driven Python modules to automate ETL pipelines\n\n" +
-                           "• Optimized complex SQL queries to reduce data-retrieval times by 25%";
-                }
-                
-                if (message.includes('education') || message.includes('degree') || message.includes('study')) {
-                    return "Gavriel's education includes:\n\n" +
-                           "• **Postgraduate Certificate in Applied AI Solutions Development** from George Brown College (2025-Present)\n\n" +
-                           "• **Bachelor of Arts in Computer Science** from York University (2017-2023)\n\n" +
-                           "• **Google Advanced Data Analytics Professional Certificate** (2024)\n\n" +
-                           "• **Google Data Analytics Professional Certificate** (2024)";
-                }
-                
-                // Default response for portfolio-related questions that don't match specific categories
-                return "Thanks for your interest in Gavriel's portfolio! He's an aspiring Data Scientist and AI Developer with experience in Python, machine learning, and data visualization. Feel free to ask about his projects, skills, education, or how to contact him.";
-            }
-
-            addMessage(content, sender) {
-                const messagesContainer = document.getElementById('chatbot-messages');
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${sender}-message`;
-                
-                // Process markdown-style formatting for bot messages
-                if (sender === 'bot') {
-                    // Convert **text** to <strong>text</strong>
-                    content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                    
-                    // Convert *text* to <em>text</em> (but not if it's part of a bullet point)
-                    content = content.replace(/(?<!\-\s)\*(.*?)\*/g, '<em>$1</em>');
-                    
-                    // Convert bullet points to HTML list items
-                    content = content.replace(/\n\s*•\s+(.*?)(?=\n|$)/g, '\n<li>$1</li>');
-                    
-                    // Convert line breaks to <br>
-                    content = content.replace(/\n\n/g, '<br><br>');
-                    content = content.replace(/\n/g, '<br>');
-                }
-                
-                messageDiv.innerHTML = `
-                    <div class="message-content">${content}</div>
-                    <div class="message-time">${this.getCurrentTime()}</div>
-                `;
-                
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            showTypingIndicator() {
-                this.isTyping = true;
-                const messagesContainer = document.getElementById('chatbot-messages');
-                const typingDiv = document.createElement('div');
-                typingDiv.className = 'message bot-message';
-                typingDiv.id = 'typing-indicator';
-                
-                typingDiv.innerHTML = `
-                    <div class="typing-indicator">
-                        <span>AI is typing</span>
-                        <div class="typing-dots">
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                            <div class="typing-dot"></div>
-                        </div>
-                    </div>
-                `;
-                
-                messagesContainer.appendChild(typingDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-
-            hideTypingIndicator() {
-                this.isTyping = false;
-                const typingIndicator = document.getElementById('typing-indicator');
-                if (typingIndicator) {
-                    typingIndicator.remove();
-                }
-            }
-
-            resetChat() {
-                // Clear messages
-                const messagesContainer = document.getElementById('chatbot-messages');
-                messagesContainer.innerHTML = `
-                    <div class="message bot-message">
-                        <div class="message-content">
-                            👋 Hi! I'm Gavriel's AI assistant. Ask me anything about his experience, projects, or skills!
-                        </div>
-                        <div class="message-time">${this.getCurrentTime()}</div>
-                    </div>
-                `;
-                
-                // Show suggestions again
-                document.getElementById('chatbot-suggestions').style.display = 'block';
-                
-                // Reset conversation history
-                this.conversations = [];
-                
-                // Generate new session ID
-                this.sessionId = this.generateSessionId();
-            }
-
-            getCurrentTime() {
-                return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            }
-        }
-
-        // Initialize chatbot when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            new PortfolioChatbot();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
-</html>     
+</html>
