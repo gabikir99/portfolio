@@ -247,3 +247,384 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Chatbot Functionality
+class PortfolioChatbot {
+    constructor() {
+        this.isOpen = false;
+        this.sessionId = 'session_' + Date.now();
+        this.init();
+    }
+
+    init() {
+        this.chatbotToggle = document.getElementById('chatbot-toggle');
+        this.chatbotWindow = document.getElementById('chatbot-window');
+        this.chatbotClose = document.getElementById('chatbot-close');
+        this.chatbotMessages = document.getElementById('chatbot-messages');
+        this.chatbotInput = document.getElementById('chatbot-input');
+        this.chatbotSend = document.getElementById('chatbot-send');
+        this.suggestionBtns = document.querySelectorAll('.suggestion-btn');
+
+        this.bindEvents();
+    }
+
+    bindEvents() {
+        // Toggle chatbot
+        this.chatbotToggle.addEventListener('click', () => this.toggleChat());
+        this.chatbotClose.addEventListener('click', () => this.closeChat());
+
+        // Send message
+        this.chatbotSend.addEventListener('click', () => this.sendMessage());
+        this.chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') this.sendMessage();
+        });
+
+        // Suggestion buttons
+        this.suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const message = btn.getAttribute('data-message');
+                this.chatbotInput.value = message;
+                this.sendMessage();
+            });
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (this.isOpen && !this.chatbotWindow.contains(e.target) && !this.chatbotToggle.contains(e.target)) {
+                this.closeChat();
+            }
+        });
+    }
+
+    toggleChat() {
+        if (this.isOpen) {
+            this.closeChat();
+        } else {
+            this.openChat();
+        }
+    }
+
+    openChat() {
+        this.isOpen = true;
+        this.chatbotWindow.classList.add('active');
+        this.chatbotInput.focus();
+        
+        // Hide suggestions after first interaction
+        setTimeout(() => {
+            const suggestions = document.querySelector('.chatbot-suggestions');
+            if (this.chatbotMessages.children.length > 1) {
+                suggestions.style.display = 'none';
+            }
+        }, 100);
+    }
+
+    closeChat() {
+        this.isOpen = false;
+        this.chatbotWindow.classList.remove('active');
+    }
+
+    async sendMessage() {
+        const message = this.chatbotInput.value.trim();
+        if (!message) return;
+
+        // Add user message
+        this.addMessage(message, 'user');
+        this.chatbotInput.value = '';
+        
+        // Hide suggestions
+        document.querySelector('.chatbot-suggestions').style.display = 'none';
+
+        // Show typing indicator
+        this.showTypingIndicator();
+
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    session_id: this.sessionId
+                })
+            });
+
+            const data = await response.json();
+            
+            // Remove typing indicator
+            this.hideTypingIndicator();
+
+            if (data.response) {
+                this.addMessage(data.response, 'bot');
+            } else {
+                this.addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            }
+        } catch (error) {
+            console.error('Chat error:', error);
+            this.hideTypingIndicator();
+            this.addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
+        }
+    }
+
+    addMessage(content, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        avatar.innerHTML = sender === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        // Parse markdown-like formatting
+        const formattedContent = this.formatMessage(content);
+        messageContent.innerHTML = formattedContent;
+
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+
+        this.chatbotMessages.appendChild(messageDiv);
+        this.scrollToBottom();
+    }
+
+    formatMessage(content) {
+        // Simple markdown parsing
+        return content
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/\n- (.*?)(?=\n|$)/g, '<li>$1</li>')
+            .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/^(.*)$/s, '<p>$1</p>')
+            .replace(/<p><\/p>/g, '');
+    }
+
+    showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message typing-message';
+        typingDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        `;
+        this.chatbotMessages.appendChild(typingDiv);
+        this.scrollToBottom();
+    }
+
+    hideTypingIndicator() {
+        const typingMessage = this.chatbotMessages.querySelector('.typing-message');
+        if (typingMessage) {
+            typingMessage.remove();
+        }
+    }
+
+    scrollToBottom() {
+        this.chatbotMessages.scrollTop = this.chatbotMessages.scrollHeight;
+    }
+}
+
+// Initialize chatbot when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new PortfolioChatbot();
+});
+
+// Chatbot Functionality
+class PortfolioChatbot {
+    constructor() {
+        this.isOpen = false;
+        this.sessionId = this.generateSessionId();
+        this.init();
+    }
+    
+    generateSessionId() {
+        return 'session_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    init() {
+        this.chatbotToggle = document.getElementById('chatbot-toggle');
+        this.chatbotWindow = document.getElementById('chatbot-window');
+        this.chatbotClose = document.getElementById('chatbot-close');
+        this.chatbotInput = document.getElementById('chatbot-input');
+        this.chatbotSend = document.getElementById('chatbot-send');
+        this.chatbotMessages = document.getElementById('chatbot-messages');
+        this.suggestionBtns = document.querySelectorAll('.suggestion-btn');
+        
+        this.bindEvents();
+    }
+    
+    bindEvents() {
+        this.chatbotToggle.addEventListener('click', () => this.toggleChatbot());
+        this.chatbotClose.addEventListener('click', () => this.closeChatbot());
+        this.chatbotSend.addEventListener('click', () => this.sendMessage());
+        
+        this.chatbotInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.sendMessage();
+            }
+        });
+        
+        this.suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const message = btn.getAttribute('data-message');
+                this.chatbotInput.value = message;
+                this.sendMessage();
+            });
+        });
+        
+        // Close chatbot when clicking outside
+        document.addEventListener('click', (e) => {
+            if (this.isOpen && !this.chatbotWindow.contains(e.target) && !this.chatbotToggle.contains(e.target)) {
+                this.closeChatbot();
+            }
+        });
+    }
+    
+    toggleChatbot() {
+        if (this.isOpen) {
+            this.closeChatbot();
+        } else {
+            this.openChatbot();
+        }
+    }
+    
+    openChatbot() {
+        this.isOpen = true;
+        this.chatbotWindow.classList.add('active');
+        this.chatbotInput.focus();
+        
+        // Hide suggestions after first interaction
+        setTimeout(() => {
+            const suggestions = document.querySelector('.chatbot-suggestions');
+            if (this.chatbotMessages.children.length > 1) {
+                suggestions.style.display = 'none';
+            }
+        }, 100);
+    }
+    
+    closeChatbot() {
+        this.isOpen = false;
+        this.chatbotWindow.classList.remove('active');
+    }
+    
+    async sendMessage() {
+        const message = this.chatbotInput.value.trim();
+        if (!message) return;
+        
+        // Add user message
+        this.addMessage(message, 'user');
+        this.chatbotInput.value = '';
+        
+        // Hide suggestions after first message
+        const suggestions = document.querySelector('.chatbot-suggestions');
+        suggestions.style.display = 'none';
+        
+        // Show typing indicator
+        this.showTypingIndicator();
+        
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    session_id: this.sessionId
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Remove typing indicator
+            this.removeTypingIndicator();
+            
+            if (data.response) {
+                this.addMessage(data.response, 'bot');
+            } else {
+                this.addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            }
+        } catch (error) {
+            console.error('Chat error:', error);
+            this.removeTypingIndicator();
+            this.addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
+        }
+    }
+    
+    addMessage(content, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = 'message-avatar';
+        avatar.innerHTML = sender === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        // Parse markdown-like formatting
+        const formattedContent = this.formatMessage(content);
+        messageContent.innerHTML = formattedContent;
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        
+        this.chatbotMessages.appendChild(messageDiv);
+        this.scrollToBottom();
+    }
+    
+    formatMessage(content) {
+        // Convert markdown-like formatting to HTML
+        return content
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/`(.*?)`/g, '<code>$1</code>')
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/\n/g, '<br>')
+            .replace(/^(.*)$/, '<p>$1</p>')
+            .replace(/<p><\/p>/g, '')
+            .replace(/- (.*?)(<br>|$)/g, '<li>$1</li>')
+            .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+            .replace(/<\/li><br>/g, '</li>');
+    }
+    
+    showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message typing-message';
+        typingDiv.innerHTML = `
+            <div class="message-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        `;
+        
+        this.chatbotMessages.appendChild(typingDiv);
+        this.scrollToBottom();
+    }
+    
+    removeTypingIndicator() {
+        const typingMessage = this.chatbotMessages.querySelector('.typing-message');
+        if (typingMessage) {
+            typingMessage.remove();
+        }
+    }
+    
+    scrollToBottom() {
+        this.chatbotMessages.scrollTop = this.chatbotMessages.scrollHeight;
+    }
+}
+
+// Initialize chatbot when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new PortfolioChatbot();
+});
