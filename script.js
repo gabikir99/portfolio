@@ -249,6 +249,9 @@ style.textContent = `
 document.head.appendChild(style);
 
 // Chatbot Functionality
+// Determine API base URL (useful if the page is served from a different port)
+const API_BASE_URL = window.location.port === '5000' ? '' : 'http://localhost:5000';
+
 class PortfolioChatbot {
     constructor() {
         this.isOpen = false;
@@ -344,7 +347,7 @@ class PortfolioChatbot {
         this.showTypingIndicator();
         
         try {
-            const response = await fetch('/chat/stream', {
+            const response = await fetch(`${API_BASE_URL}/chat/stream`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -360,7 +363,13 @@ class PortfolioChatbot {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            
+            const contentType = response.headers.get('Content-Type') || '';
+            if (!contentType.includes('text/event-stream')) {
+                this.removeTypingIndicator();
+                const data = await response.json();
+                this.addMessage(data.response || 'No response', 'bot');
+                return;
+            }
             // Remove typing indicator before streaming
             this.removeTypingIndicator();
             

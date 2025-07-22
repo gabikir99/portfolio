@@ -4,9 +4,9 @@
   "description": "Gavriel Kirichenko's Portfolio Website with AI Chatbot",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
-  },
+  "start": "python app.py",
+  "dev": "python app.py"
+},
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",

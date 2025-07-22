@@ -245,9 +245,10 @@ def chat():
 @app.route('/chat/stream', methods=['POST', 'GET'])
 def chat_stream():
     """Streaming chat endpoint"""
+    data = request.get_json()
+    
     def generate():
         try:
-            data = request.get_json()
             
             if not data or 'message' not in data:
                 yield f"data: {json.dumps({'error': 'No message provided'})}\n\n"
