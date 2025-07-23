@@ -842,6 +842,16 @@ section {
     margin: 0 0 8px 0;
 }
 
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6 {
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
 .message-content p:last-child {
     margin-bottom: 0;
 }
@@ -1261,6 +1271,16 @@ section {
 .message-content p {
     margin: 0 0 8px 0;
     line-height: 1.5;
+}
+
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6 {
+    margin: 0 0 8px 0;
+    font-weight: 600;
 }
 
 .message-content p:last-child {

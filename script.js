@@ -512,17 +512,27 @@ class PortfolioChatbot {
         let html = '';
         let inList = false;
 
+        const closeList = () => {
+            if (inList) {
+                html += '</ul>';
+                inList = false;
+            }
+        };
+
         lines.forEach(line => {
-            const headingMatch = line.match(/^(#{1,6})\s+(.*)/); // Markdown headings
+            const headingMatch = line.match(/^\s*(#{1,6})\s+(.*)/);
+            if (headingMatch) {
+                closeList();
+                const level = headingMatch[1].trim().length;
+                const text = headingMatch[2].trim();
+                html += `<h${level}>${parseInline(text)}</h${level}>`;
+                return;
+            }
             const bulletMatch = line.match(/^\s*([-*•])\s+(.*)/);
             if (bulletMatch) {
                 const itemText = bulletMatch[2].trim();
-                // If the line ends with a colon, treat it as a heading, not a list item
                 if (itemText.endsWith(':')) {
-                    if (inList) {
-                        html += '</ul>';
-                        inList = false;
-                    }
+                    closeList();
                     html += `<p>${parseInline(itemText)}</p>`;
                 } else {
                     if (!inList) {
@@ -531,24 +541,29 @@ class PortfolioChatbot {
                     }
                     html += `<li>${parseInline(itemText)}</li>`;
                 }
+                return;
+            }
+
+            const numberedMatch = line.match(/^\s*\d+\.\s+(.*)/);
+            if (numberedMatch) {
+                const itemText = numberedMatch[1].trim();
+                if (!inList) {
+                    html += '<ul>';
+                    inList = true;
+                }
+                html += `<li>${parseInline(itemText)}</li>`;
+                return;
+            }
+            closeList();
+            const trimmed = line.trim();
+            if (trimmed) {
+                html += `<p>${parseInline(trimmed)}</p>`;
             } else {
-                if (inList) {
-                    html += '</ul>';
-                    inList = false;
-                }
-                const trimmed = line.trim();
-                if (trimmed) {
-                    html += `<p>${parseInline(trimmed)}</p>`;
-                } else {
-                    html += '<br>';
-                }
+                html += '<br>';
             }
         });
 
-        if (inList) {
-            html += '</ul>';
-        }
-
+        closeList();
         return html;
     }
     
