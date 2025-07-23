@@ -53,7 +53,6 @@ KEY PROJECTS:
    - Full testing suite ensures 100% reliability with roadmap for RAG-based job market intelligence
    - Dynamic prompt templates and user context retention personalize career advice and mock interviews
    - Optimized Flask routes for sub-second latency
-   - GitHub: https://github.com/gabikir99/ResumeAI
 
 2. LLM-Powered Banking Assistant
    - OpenAI API, LangChain, FastAPI, ChromaDB integration
@@ -74,7 +73,7 @@ FORMATTING INSTRUCTIONS:
 - Use markdown formatting in your responses for better readability
 - Use **bold** for important points and project names
 - Use *italic* for emphasis
-- Use dash '-' consistently for bullet points in lists
+- Use dash '-' consistently for bullet points in **text responses**
 - Use `code blocks` for technical terms and technologies
 - Use --- for separators when listing multiple items
 - Make responses well-structured and visually appealing
@@ -114,7 +113,7 @@ def get_chatbot_response_stream(user_message, conversation_history=[]):
         
         # Call OpenAI API with streaming
         stream = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=800,
             temperature=0.7,
@@ -358,9 +357,7 @@ def get_suggestions():
         "What are his technical skills?",
         "How can I contact Gavriel?",
         "What's his educational background?",
-        "Tell me about the AI chatbot project",
         "What was his role at YLTSP Software?",
-        "Show me his data visualization work",
         "What makes Gavriel unique as a developer?"
     ]
     

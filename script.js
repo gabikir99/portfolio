@@ -287,7 +287,7 @@ class PortfolioChatbot {
                 const btn = document.createElement('button');
                 btn.className = 'suggestion-btn';
                 btn.dataset.message = text;
-                btn.textContent = text;
+                btn.textContent = `• ${text}`;  
                 this.suggestionsContainer.appendChild(btn);
             });
             this.suggestionBtns = this.suggestionsContainer.querySelectorAll('.suggestion-btn');
@@ -499,18 +499,57 @@ class PortfolioChatbot {
     }
     
     formatMessage(content) {
-        // Convert markdown-like formatting to HTML
-        return content
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')
-            .replace(/`(.*?)`/g, '<code>$1</code>')
-            .replace(/\n\n/g, '</p><p>')
-            .replace(/\n/g, '<br>')
-            .replace(/^(.*)$/, '<p>$1</p>')
-            .replace(/<p><\/p>/g, '')
-            .replace(/[-*] (.*?)(<br>|$)/g, '<li>$1</li>')
-            .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
-            .replace(/<\/li><br>/g, '</li>');
+        // Convert markdown-like formatting to HTML with proper list handling
+
+        const parseInline = (text) => {
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code>$1</code>');
+        };
+
+        const lines = content.split('\n');
+        let html = '';
+        let inList = false;
+
+        lines.forEach(line => {
+            const headingMatch = line.match(/^(#{1,6})\s+(.*)/); // Markdown headings
+            const bulletMatch = line.match(/^\s*([-*•])\s+(.*)/);
+            if (bulletMatch) {
+                const itemText = bulletMatch[2].trim();
+                // If the line ends with a colon, treat it as a heading, not a list item
+                if (itemText.endsWith(':')) {
+                    if (inList) {
+                        html += '</ul>';
+                        inList = false;
+                    }
+                    html += `<p>${parseInline(itemText)}</p>`;
+                } else {
+                    if (!inList) {
+                        html += '<ul>';
+                        inList = true;
+                    }
+                    html += `<li>${parseInline(itemText)}</li>`;
+                }
+            } else {
+                if (inList) {
+                    html += '</ul>';
+                    inList = false;
+                }
+                const trimmed = line.trim();
+                if (trimmed) {
+                    html += `<p>${parseInline(trimmed)}</p>`;
+                } else {
+                    html += '<br>';
+                }
+            }
+        });
+
+        if (inList) {
+            html += '</ul>';
+        }
+
+        return html;
     }
     
     showTypingIndicator() {
