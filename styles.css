@@ -1407,3 +1407,27 @@ section {
         max-width: 85%;
     }
 }
+
+/* Responsive fix for chatbot on small screens */
+@media (max-width: 768px) {
+    .chatbot-window {
+      width: 90vw !important;
+      height: 80vh !important;
+      right: 5vw !important;
+      bottom: 10vh !important;
+      border-radius: 20px !important;
+      max-width: 100% !important;
+    }
+  
+    .chatbot-container {
+      position: fixed !important;
+      bottom: 20px !important;
+      right: 20px !important;
+      z-index: 9999 !important;
+    }
+  
+    #chatbot-messages {
+      max-height: 60vh !important;
+      overflow-y: auto !important;
+    }
+  }
