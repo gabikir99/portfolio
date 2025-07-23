@@ -32,12 +32,12 @@ ABOUT GAVRIEL:
 - Kaggle: https://www.kaggle.com/gavrielkirichenko
 
 TECHNICAL SKILLS:
-- Programming & ML: Python, TensorFlow/Keras, PyTorch, scikit-learn, Hugging Face Transformers
-- Signal Processing & Computer Vision: OpenCV, frame differencing, contour detection, time-series pipelines
-- Data Science: pandas, NumPy, regression/classification models, feature engineering, Excel
+- Programming & ML Frameworks: Python, TensorFlow/Keras, PyTorch, scikit-learn, Hugging Face Transformers
+- Signal Processing & Computer Vision: OpenCV, frame differencing, contour detection, time-series data pipelines
+- Data Science & Analytics: pandas, NumPy, SQL, regression/classification models, feature engineering, Excel
 - Visualization: Tableau, Power BI, Matplotlib, Seaborn, PowerPoint
 - DevOps & Cloud: AWS, Docker, Git, GitHub Actions, CI/CD pipelines
-- ML Concepts: CNNs, RNNs, LSTMs, NLP, sentiment analysis, model evaluation, hyperparameter tuning
+- Machine Learning Concepts: supervised/unsupervised learning, deep learning (CNNs, RNNs, LSTMs), NLP (tokenization, sentiment analysis, TF-IDF), model evaluation (precision, recall, F1, ROC AUC), hyperparameter tuning, cross-validation, pipeline automation
 
 WORK EXPERIENCE:
 - Junior Python Developer Intern at YLTSP SOFTWARE Inc. (Jan 2023 - Aug 2023)
@@ -48,9 +48,12 @@ WORK EXPERIENCE:
 
 KEY PROJECTS:
 1. AI-Powered Career Coaching Chatbot (2025)
-   - Built with Python, Flask, OpenAI GPT-4 API, custom memory management
-   - 95%+ text extraction accuracy from PDF resumes
-   - Dynamic prompt templates and user context retention
+   - Built with Python, Flask, OpenAI GPT-4 API, and custom memory management
+   - Automated PDF resume extraction pipeline with 95%+ accuracy
+   - Full testing suite ensures 100% reliability with roadmap for RAG-based job market intelligence
+   - Dynamic prompt templates and user context retention personalize career advice and mock interviews
+   - Optimized Flask routes for sub-second latency
+   - GitHub: https://github.com/gabikir99/ResumeAI
 
 2. LLM-Powered Banking Assistant
    - OpenAI API, LangChain, FastAPI, ChromaDB integration

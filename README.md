@@ -52,6 +52,16 @@ Welcome to my GitHub! I'm passionate about transforming data into actionable ins
 
 ## 🏆 Featured Projects
 
+### 🎓 [AI-Powered Career Coaching Chatbot](https://github.com/gabikir99/ResumeAI)
+
+**Production-grade career coaching assistant**
+
+- **Built with** Python, Flask, OpenAI GPT-4 API, and custom memory management
+- **Resume Parsing** pipeline extracts PDF text with 95%+ accuracy
+- **Testing Suite** ensures 100% reliability and lays groundwork for RAG-based job market intelligence
+- **Dynamic Prompting** retains user context to personalize advice and mock interviews
+- **Optimized Flask Routes** for sub-second response latency
+
 ### 🤖 [LLM-Powered Banking Assistant](https://github.com/gabikir99/llm-chatbot)
 
 **Production-grade AI chatbot with RAG architecture**

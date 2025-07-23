@@ -144,15 +144,15 @@ function randomFloatingMovement() {
 setInterval(randomFloatingMovement, 5000);
 
 // Parallax effect for hero section
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const parallaxElements = document.querySelectorAll('.floating-card');
+// window.addEventListener('scroll', () => {
+//     const scrolled = window.pageYOffset;
+//     const parallaxElements = document.querySelectorAll('.floating-card');
     
-    parallaxElements.forEach((element, index) => {
-        const speed = 0.5 + (index * 0.1);
-        element.style.transform = `translateY(${scrolled * speed}px)`;
-    });
-});
+//     parallaxElements.forEach((element, index) => {
+//         const speed = 0.5 + (index * 0.1);
+//         element.style.transform = `translateY(${scrolled * speed}px)`;
+//     });
+// });
 
 // Add loading animation
 window.addEventListener('load', () => {
