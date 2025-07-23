@@ -266,6 +266,7 @@ class PortfolioChatbot {
     init() {
         this.chatbotToggle = document.getElementById('chatbot-toggle');
         this.chatbotWindow = document.getElementById('chatbot-window');
+        this.resizeHandle = document.getElementById('resize-handle');
         this.chatbotClose = document.getElementById('chatbot-close');
         this.chatbotInput = document.getElementById('chatbot-input');
         this.chatbotSend = document.getElementById('chatbot-send');
@@ -279,6 +280,7 @@ class PortfolioChatbot {
         this.chatbotToggle.addEventListener('click', () => this.toggleChatbot());
         this.chatbotClose.addEventListener('click', () => this.closeChatbot());
         this.chatbotSend.addEventListener('click', () => this.sendMessage());
+        this.resizeHandle.addEventListener('mousedown', (e) => this.initResize(e));
         
         this.chatbotInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -509,6 +511,31 @@ class PortfolioChatbot {
         }
     }
     
+    initResize(e) {
+        e.preventDefault();
+        this.startX = e.clientX;
+        this.startY = e.clientY;
+        const rect = this.chatbotWindow.getBoundingClientRect();
+        this.startWidth = rect.width;
+        this.startHeight = rect.height;
+        this.doResizeBound = this.doResize.bind(this);
+        this.stopResizeBound = this.stopResize.bind(this);
+        document.addEventListener('mousemove', this.doResizeBound);
+        document.addEventListener('mouseup', this.stopResizeBound);
+    }
+
+    doResize(e) {
+        const newWidth = Math.max(280, this.startWidth + (this.startX - e.clientX));
+        const newHeight = Math.max(400, this.startHeight + (this.startY - e.clientY));
+        this.chatbotWindow.style.width = `${newWidth}px`;
+        this.chatbotWindow.style.height = `${newHeight}px`;
+    }
+
+    stopResize() {
+        document.removeEventListener('mousemove', this.doResizeBound);
+        document.removeEventListener('mouseup', this.stopResizeBound);
+    }
+
     scrollToBottom() {
         this.chatbotMessages.scrollTop = this.chatbotMessages.scrollHeight;
     }

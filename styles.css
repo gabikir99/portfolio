@@ -717,8 +717,8 @@ section {
     position: absolute;
     bottom: 80px;
     right: 0;
-    width: 350px;
-    height: 500px;
+    width: 420px;
+    height: 560px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
@@ -729,6 +729,18 @@ section {
     transform: scale(0.8) translateY(20px);
     opacity: 0;
     transition: all 0.3s ease;
+}
+
+.resize-handle {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 14px;
+    height: 14px;
+    cursor: nwse-resize;
+    border-top: 2px solid #666;
+    border-left: 2px solid #666;
+    background: transparent;
 }
 
 .chatbot-window.active {
@@ -1065,8 +1077,8 @@ section {
     }
     
     .chatbot-window {
-        width: 300px;
-        height: 450px;
+        width: 340px;
+        height: 520px;
         bottom: 70px;
         right: -10px;
     }
@@ -1129,8 +1141,8 @@ section {
     position: absolute;
     bottom: 80px;
     right: 0;
-    width: 380px;
-    height: 500px;
+    width: 420px;
+    height: 560px;
     background: white;
     border-radius: 20px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
