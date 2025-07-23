@@ -250,7 +250,7 @@ document.head.appendChild(style);
 
 // Chatbot Functionality
 // Determine API base URL (useful if the page is served from a different port)
-const API_BASE_URL = window.location.port === '5000' ? '' : 'http://localhost:5000';
+const API_BASE_URL = 'https://gk-portfolio-api.onrender.com';
 
 class PortfolioChatbot {
     constructor() {
