@@ -113,8 +113,6 @@ Welcome to my GitHub! I'm passionate about transforming data into actionable ins
 - 🚀 **Deployment Speed**: Enabled **20% faster** deployment of feature variants
 - 🤖 **Automation**: Automated ETL pipelines using **Object-Oriented Programming (OOP)** principles
 
-```
-
 ---
 
 ## 🎓 Education & Certifications
@@ -170,4 +168,7 @@ I'm passionate about using AI to solve real-world problems - from predicting che
 ---
 
 ⭐ **Feel free to explore my repositories and don't hesitate to star any projects that interest you!**
+
+```
+
 ```
