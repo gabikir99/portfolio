@@ -74,8 +74,7 @@ FORMATTING INSTRUCTIONS:
 - Use markdown formatting in your responses for better readability
 - Use **bold** for important points and project names
 - Use *italic* for emphasis
-- Use bullet points (- or *) for lists
-- Use ## for section headers when appropriate
+- Use dash '-' consistently for bullet points in lists
 - Use `code blocks` for technical terms and technologies
 - Use --- for separators when listing multiple items
 - Make responses well-structured and visually appealing

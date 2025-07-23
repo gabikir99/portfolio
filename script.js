@@ -271,9 +271,41 @@ class PortfolioChatbot {
         this.chatbotInput = document.getElementById('chatbot-input');
         this.chatbotSend = document.getElementById('chatbot-send');
         this.chatbotMessages = document.getElementById('chatbot-messages');
-        this.suggestionBtns = document.querySelectorAll('.suggestion-btn');
-        
+        this.suggestionsContainer = document.querySelector('.chatbot-suggestions');
+
+        this.loadSuggestions();    
         this.bindEvents();
+    }
+
+    async loadSuggestions() {
+        if (!this.suggestionsContainer) return;
+        try {
+            const res = await fetch(`${API_BASE_URL}/suggestions`);
+            const data = await res.json();
+            this.suggestionsContainer.innerHTML = '';
+            data.suggestions.forEach(text => {
+                const btn = document.createElement('button');
+                btn.className = 'suggestion-btn';
+                btn.dataset.message = text;
+                btn.textContent = text;
+                this.suggestionsContainer.appendChild(btn);
+            });
+            this.suggestionBtns = this.suggestionsContainer.querySelectorAll('.suggestion-btn');
+            this.addSuggestionEvents();
+        } catch (e) {
+            console.error('Error loading suggestions:', e);
+        }
+    }
+
+    addSuggestionEvents() {
+        if (!this.suggestionBtns) return;
+        this.suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const message = btn.getAttribute('data-message');
+                this.chatbotInput.value = message;
+                this.sendMessage();
+            });
+        });
     }
     
     bindEvents() {
@@ -286,14 +318,6 @@ class PortfolioChatbot {
             if (e.key === 'Enter') {
                 this.sendMessage();
             }
-        });
-        
-        this.suggestionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const message = btn.getAttribute('data-message');
-                this.chatbotInput.value = message;
-                this.sendMessage();
-            });
         });
         
         // Close chatbot when clicking outside
@@ -484,7 +508,7 @@ class PortfolioChatbot {
             .replace(/\n/g, '<br>')
             .replace(/^(.*)$/, '<p>$1</p>')
             .replace(/<p><\/p>/g, '')
-            .replace(/- (.*?)(<br>|$)/g, '<li>$1</li>')
+            .replace(/[-*] (.*?)(<br>|$)/g, '<li>$1</li>')
             .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
             .replace(/<\/li><br>/g, '</li>');
     }
