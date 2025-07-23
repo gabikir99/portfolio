@@ -268,10 +268,13 @@ class PortfolioChatbot {
         this.chatbotWindow = document.getElementById('chatbot-window');
         this.resizeHandle = document.getElementById('resize-handle');
         this.chatbotClose = document.getElementById('chatbot-close');
+        this.chatbotReset = document.getElementById('chatbot-reset');
         this.chatbotInput = document.getElementById('chatbot-input');
         this.chatbotSend = document.getElementById('chatbot-send');
         this.chatbotMessages = document.getElementById('chatbot-messages');
         this.suggestionsContainer = document.querySelector('.chatbot-suggestions');
+
+        this.initialMessages = this.chatbotMessages.innerHTML;
 
         this.loadSuggestions();    
         this.bindEvents();
@@ -311,6 +314,7 @@ class PortfolioChatbot {
     bindEvents() {
         this.chatbotToggle.addEventListener('click', () => this.toggleChatbot());
         this.chatbotClose.addEventListener('click', () => this.closeChatbot());
+        this.chatbotReset.addEventListener('click', () => this.resetChat());
         this.chatbotSend.addEventListener('click', () => this.sendMessage());
         this.resizeHandle.addEventListener('mousedown', (e) => this.initResize(e));
         
@@ -591,7 +595,26 @@ class PortfolioChatbot {
             typingMessage.remove();
         }
     }
-    
+
+    async resetChat() {
+        try {
+            await fetch(`${API_BASE_URL}/reset`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ session_id: this.sessionId })
+            });
+        } catch (e) {
+            console.error('Reset error:', e);
+        }
+        this.sessionId = this.generateSessionId();
+        this.chatbotMessages.innerHTML = this.initialMessages;
+        if (this.suggestionsContainer) {
+            this.suggestionsContainer.style.display = '';
+        }
+        this.chatbotInput.value = '';
+        this.scrollToBottom();
+    }
+
     initResize(e) {
         e.preventDefault();
         this.startX = e.clientX;
