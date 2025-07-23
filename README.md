@@ -106,15 +106,13 @@ Welcome to my GitHub! I'm passionate about transforming data into actionable ins
 
 ## 📈 Professional Impact
 
-### 💼 **YLTSP Software Inc. - Junior Python Developer Intern**
+### 💼 **YLTSP Software Inc. – Junior Python Developer Intern**
 
-```python
-impact = {
-    "A/B_testing_improvement": "12% user engagement boost",
-    "query_optimization": "25% reduction in data retrieval time",
-    "deployment_speed": "20% faster variant deployment",
-    "automation": "ETL pipeline automation with OOP design"
-}
+- 📊 **A/B Testing Improvement**: Achieved a **12% boost** in user engagement through improved testing workflows
+- ⚡ **Query Optimization**: Reduced data retrieval time by **25%** through efficient SQL tuning
+- 🚀 **Deployment Speed**: Enabled **20% faster** deployment of feature variants
+- 🤖 **Automation**: Automated ETL pipelines using **Object-Oriented Programming (OOP)** principles
+
 ```
 
 ---
@@ -134,7 +132,7 @@ impact = {
 ## 📊 GitHub Stats
 
 <div align="center">
-  
+
 ![Gavriel's GitHub Stats](https://github-readme-stats.vercel.app/api?username=gabikir99&show_icons=true&theme=radical)
 
 ![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=gabikir99&layout=compact&theme=radical)
@@ -172,3 +170,4 @@ I'm passionate about using AI to solve real-world problems - from predicting che
 ---
 
 ⭐ **Feel free to explore my repositories and don't hesitate to star any projects that interest you!**
+```
