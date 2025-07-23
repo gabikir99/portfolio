@@ -1386,48 +1386,33 @@ section {
     }
 }
 
-/* Mobile Responsiveness for Chatbot */
 @media (max-width: 480px) {
     .chatbot-window {
-        width: calc(100vw - 40px);
-        height: 70vh;
+        width: 90vw;
+        height: 75vh;
         bottom: 80px;
-        right: 20px;
-        left: 20px;
+        left: 5vw;
+        right: 5vw;
+        border-radius: 15px;
+        max-width: 100%;
         z-index: 2000;
     }
-    
+
     .chatbot-toggle {
         width: 50px;
         height: 50px;
         font-size: 20px;
+        bottom: 20px;
+        right: 20px;
     }
-    
+
     .message-content {
         max-width: 85%;
+        word-break: break-word;
+    }
+
+    #chatbot-messages {
+        max-height: 55vh;
+        overflow-y: auto;
     }
 }
-
-/* Responsive fix for chatbot on small screens */
-@media (max-width: 768px) {
-    .chatbot-window {
-      width: 90vw !important;
-      height: 80vh !important;
-      right: 5vw !important;
-      bottom: 10vh !important;
-      border-radius: 20px !important;
-      max-width: 100% !important;
-    }
-  
-    .chatbot-container {
-      position: fixed !important;
-      bottom: 20px !important;
-      right: 20px !important;
-      z-index: 9999 !important;
-    }
-  
-    #chatbot-messages {
-      max-height: 60vh !important;
-      overflow-y: auto !important;
-    }
-  }
