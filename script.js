@@ -383,6 +383,7 @@ class PortfolioChatbot {
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             let buffer = '';
+            let messageBuffer = '';
             
             while (true) {
                 const { done, value } = await reader.read();
@@ -406,14 +407,16 @@ class PortfolioChatbot {
                             
                             if (data.done) {
                                 // Format the final message content
-                                const finalContent = this.formatMessage(messageContent.textContent);
+                                const finalContent = this.formatMessage(messageBuffer);
                                 messageContent.innerHTML = finalContent;
                                 break;
                             }
                             
                             if (data.content) {
-                                messageContent.textContent += data.content;
+                                messageBuffer += data.content;
+                                messageContent.innerHTML = this.formatMessage(messageBuffer);
                                 this.scrollToBottom();
+                                await new Promise(res => setTimeout(res, 60));
                             }
                         } catch (e) {
                             console.error('Error parsing streaming data:', e);

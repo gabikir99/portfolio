@@ -75,7 +75,7 @@ FORMATTING INSTRUCTIONS:
 - Use **bold** for important points and project names
 - Use *italic* for emphasis
 - Use bullet points (- or *) for lists
-- Use ### for section headers when appropriate
+- Use ## for section headers when appropriate
 - Use `code blocks` for technical terms and technologies
 - Use --- for separators when listing multiple items
 - Make responses well-structured and visually appealing
