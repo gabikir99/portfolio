@@ -259,6 +259,7 @@ class PortfolioChatbot {
     constructor() {
         this.isOpen = false;
         this.sessionId = this.generateSessionId();
+        this.abortController = null;
         this.init();
     }
     
@@ -366,6 +367,11 @@ class PortfolioChatbot {
         const message = this.chatbotInput.value.trim();
         if (!message) return;
         
+        if (this.abortController) {
+            this.abortController.abort();
+        }
+        this.abortController = new AbortController();
+
         console.log('Sending message:', message); // Debug log
         
         // Add user message
@@ -388,7 +394,8 @@ class PortfolioChatbot {
                 body: JSON.stringify({
                     message: message,
                     session_id: this.sessionId
-                })
+                }),
+                signal: this.abortController.signal
             });
             
             console.log('Response status:', response.status); // Debug log
@@ -457,9 +464,15 @@ class PortfolioChatbot {
             }
             
         } catch (error) {
-            console.error('Chat error:', error);
-            this.removeTypingIndicator();
-            this.addMessage('Sorry, I\'m having trouble connecting. Please try again later. Error: ' + error.message, 'bot');
+            if (error.name === 'AbortError') {
+                console.log('Chat request aborted');
+            } else {
+                console.error('Chat error:', error);
+                this.removeTypingIndicator();
+                this.addMessage('Sorry, I\'m having trouble connecting. Please try again later. Error: ' + error.message, 'bot');
+            }
+        } finally {
+            this.abortController = null;
         }
     }
     
@@ -600,6 +613,11 @@ class PortfolioChatbot {
     }
 
     async resetChat() {
+        if (this.abortController) {
+            this.abortController.abort();
+            this.abortController = null;
+        }
+        this.removeTypingIndicator();
         try {
             await fetch(`${API_BASE_URL}/reset`, {
                 method: 'POST',
