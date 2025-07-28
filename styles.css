@@ -1516,7 +1516,7 @@ section {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    object-position: center 70px;
+    object-position: center 10px;
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
 }
